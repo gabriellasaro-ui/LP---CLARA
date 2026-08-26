@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: lp-app
+    ports:
+      - "5016:5016"
+    environment:
+      - FLASK_ENV=production
+    restart: unless-stopped
