@@ -3016,6 +3016,78 @@
         transition: none;
       }
     }
+
+    /* ===================== WIDGET REDRIVE (ajustes responsivos) ===================== */
+    /* O CSS do widget e carregado por JS depois deste bloco, entao os overrides usam !important. */
+
+    /* Ate 900px o CTA flutuante ocupa o rodape: sobe a bolha e a janela do chat. */
+    @media(max-width:900px) {
+      .redrive-widget-launcher {
+        width: 3.25rem !important;
+        height: 3.25rem !important;
+        right: 14px !important;
+        bottom: calc(6.25rem + env(safe-area-inset-bottom)) !important;
+        margin-top: 0 !important;
+      }
+
+      .redrive-widget-launcher-image-user {
+        width: 3.25rem !important;
+        height: 3.25rem !important;
+      }
+
+      .redrive-widget-launcher-image {
+        width: 1.55rem !important;
+        height: 1.55rem !important;
+      }
+
+      .redrive-widget-launcher-text {
+        display: none !important;
+      }
+
+      .redrive-widget-chat-window {
+        bottom: calc(10.25rem + env(safe-area-inset-bottom)) !important;
+      }
+
+      .redrive-widget-message-list-container {
+        height: 30vh !important;
+        min-height: 150px !important;
+        max-height: 260px !important;
+      }
+
+      .redrive-widget-input-message {
+        height: 56px !important;
+      }
+    }
+
+    /* Em telas estreitas a janela de 24em estoura a viewport: vira largura fluida. */
+    @media(max-width:620px) {
+      .redrive-widget-chat-window {
+        left: 12px !important;
+        right: 12px !important;
+        width: auto !important;
+        max-width: calc(100vw - 24px) !important;
+      }
+
+      .redrive-widget-message {
+        max-width: 78% !important;
+        margin: 5px 12px !important;
+        font-size: .85rem !important;
+      }
+
+      .redrive-widget-header-container {
+        min-height: 62px !important;
+      }
+
+      /* vmax deixa esses textos com ~4px no mobile */
+      .redrive-widget-copy-right {
+        font-size: 10px !important;
+      }
+
+      .redrive-widget-file-list,
+      .redrive-widget-file-message-list {
+        font-size: 11px !important;
+      }
+    }
   </style>
 </head>
 
