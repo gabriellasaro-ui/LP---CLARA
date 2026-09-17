@@ -15,13 +15,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description"
-    content="Encontro presencial para 100 donos de restaurante em Belo Horizonte. 29 de setembro, das 18h as 22h, na TV Sim. Realizacao Cozinha Campea, de Clara Senra, com a V4 Company." />
+    content="Encontro presencial para 100 donos de negocios da gastronomia em Belo Horizonte. 29 de setembro, das 18h as 22h, na TV Sim. Realizacao Cozinha Campea, de Clara Senra, com a V4 Company." />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Restaurante Campeão: como aumentar as vendas do seu restaurante" />
+  <meta property="og:title" content="Cozinha Campeã: como aumentar as vendas do seu negócio de gastronomia" />
   <meta property="og:description"
-    content="29 de setembro, das 18h às 22h, na TV Sim, em Belo Horizonte. 100 donos de restaurante. Cozinha Campeã × V4 Company." />
+    content="29 de setembro, das 18h às 22h, na TV Sim, em Belo Horizonte. 100 donos de negócios da gastronomia. Cozinha Campeã × V4 Company." />
   <meta name="theme-color" content="#171719" />
-  <title>Restaurante Campeão · Cozinha Campeã × V4 Company</title>
+  <title>Cozinha Campeã · Como aumentar as vendas do seu negócio de gastronomia</title>
 
   <link rel="icon" href="/static/img/favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" href="/static/img/favicon-512.png" />
@@ -891,15 +891,20 @@
         margin-top: auto;
       }
 
+      /* marca já aparece na barra fixa; no mobile o headline vira só a proposta de valor */
+      .h1__brand {
+        display: none;
+      }
+
       .h1 {
-        font-size: clamp(1.625rem, 1.2rem + 2.4vw, 2rem);
-        line-height: 1.06;
+        font-size: clamp(1.375rem, 1.05rem + 1.8vw, 1.625rem);
+        line-height: 1.12;
       }
 
       .hero__sub {
-        font-size: .9375rem;
-        line-height: 1.55;
-        margin-top: .85rem;
+        font-size: .875rem;
+        line-height: 1.5;
+        margin-top: .75rem;
       }
 
       .hero__micro {
@@ -952,11 +957,11 @@
       }
 
       .h1 {
-        font-size: 1.5rem;
+        font-size: 1.3125rem;
       }
 
       .hero__sub {
-        font-size: .875rem;
+        font-size: .8125rem;
         line-height: 1.45;
         margin-top: .7rem;
       }
@@ -1999,11 +2004,13 @@
       text-transform: uppercase;
       letter-spacing: .14em;
       color: var(--ambar-texto);
+      text-align: center;
     }
 
     .ticket__price {
       display: flex;
       align-items: flex-start;
+      justify-content: center;
       gap: .4rem;
       margin: 0;
       color: var(--carvao);
@@ -2038,6 +2045,7 @@
       margin: .65rem 0 0;
       font-size: .8125rem;
       color: var(--cinza-texto);
+      text-align: center;
     }
 
     /* picote entre o corpo e o canhoto */
@@ -2962,55 +2970,17 @@
       }
     }
 
-    /* ===================== CTA FLUTUANTE MOBILE ===================== */
-    .mobile-cta {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 70;
-      display: none;
-      padding: .7rem var(--pad-x) calc(.7rem + env(safe-area-inset-bottom));
-      background: rgba(23, 23, 25, .97);
-      border-top: 1px solid rgba(255, 255, 255, .12);
-      transform: translateY(105%);
-      transition: transform .3s ease;
-    }
-
-    .mobile-cta.is-on {
-      transform: none;
-    }
-
-    .mobile-cta .btn {
-      min-height: 52px;
-    }
-
-    @media(max-width:900px) {
-      .mobile-cta {
-        display: block;
-      }
-
-      .site-footer {
-        padding-bottom: 7rem;
-      }
-    }
-
-    @media (prefers-reduced-motion:reduce) {
-      .mobile-cta {
-        transition: none;
-      }
-    }
 
     /* ===================== WIDGET REDRIVE (ajustes responsivos) ===================== */
     /* O CSS do widget e carregado por JS depois deste bloco, entao os overrides usam !important. */
 
-    /* Ate 900px o CTA flutuante ocupa o rodape: sobe a bolha e a janela do chat. */
+    /* Sem CTA flutuante no rodapé mobile: bolha e janela do chat colam perto do canto. */
     @media(max-width:900px) {
       .redrive-widget-launcher {
         width: 3.25rem !important;
         height: 3.25rem !important;
         right: 14px !important;
-        bottom: calc(6.25rem + env(safe-area-inset-bottom)) !important;
+        bottom: calc(1.1rem + env(safe-area-inset-bottom)) !important;
         margin-top: 0 !important;
       }
 
@@ -3029,7 +2999,7 @@
       }
 
       .redrive-widget-chat-window {
-        bottom: calc(10.25rem + env(safe-area-inset-bottom)) !important;
+        bottom: calc(5.1rem + env(safe-area-inset-bottom)) !important;
       }
 
       .redrive-widget-message-list-container {
@@ -3113,12 +3083,14 @@
       <div class="hero__inner">
         <div class="wrap">
           <div class="hero__content">
-            <p class="eyebrow">29 de setembro · TV Sim · Belo Horizonte · 100 donos de restaurante</p>
-            <h1 class="h1" id="hero-title">RESTAURANTE CAMPEÃO:<span class="amber">como aumentar as vendas do seu
-                restaurante.</span></h1>
+            <p class="eyebrow">29 de setembro · TV Sim · Belo Horizonte · 100 donos de negócios da gastronomia</p>
+            <h1 class="h1" id="hero-title"><span class="h1__brand">COZINHA CAMPEÃ:</span><span class="amber">como
+                aumentar as vendas do seu negócio de gastronomia.</span></h1>
             <p class="hero__sub">Comida boa só, não paga a conta! Uma noite com Clara Senra e a V4 Company para mostrar
-              o que faz um restaurante ser visto, desejado e lucrativo. Um encontro exclusivo para 100 empresários donos
-              de restaurantes que querem parar de depender da sorte, do movimento e das altas taxas dos aplicativos.</p>
+              o que faz um negócio da gastronomia ser visto, desejado e lucrativo. Um encontro exclusivo para 100 donos
+              de restaurantes, bares, cafeterias, padarias, lanchonetes, confeitarias, hamburguerias, delivery, casas de
+              eventos e outros negócios da gastronomia que querem parar de depender da sorte, do movimento e das altas
+              taxas dos aplicativos.</p>
 
 
             <div class="hero__ctas">
@@ -3172,13 +3144,13 @@
       <div class="wrap">
         <div class="thesis__head reveal">
           <p class="eyebrow">A conversa que ninguém tem com você</p>
-          <h2 class="h2 linha-anim" id="tese-title">Comida boa é o começo. <em>Mas não é o que faz um restaurante
-              crescer.</em></h2>
-          <p class="lead">Todo dono acredita na qualidade do seu produto. E muitos realmente têm uma comida incrível. O
-            problema é que, sem atenção e divulgação, essa qualidade não chega nas pessoas certas, enquanto a margem
-            diminui com CMV alto e taxas de aplicativos. Hoje, o cliente escolhe o restaurante que conquistou sua
-            atenção primeiro. Seja no Instagram, nas avaliações ou no momento em que bate a fome. Restaurante campeão
-            não é apenas o mais gostoso. É aquele que sabe ser visto, desejado e lucrativo.</p>
+          <h2 class="h2 linha-anim" id="tese-title">Comida boa é o começo. <em>Mas não é o que faz um negócio da
+              gastronomia crescer.</em></h2>
+          <p class="lead">Todo dono acredita na qualidade do que entrega. E muitos realmente têm uma comida incrível. O
+            problema é que, sem atenção e divulgação, essa qualidade não chega às pessoas certas, enquanto a margem
+            diminui com CMV alto e taxas de aplicativos. Hoje, o cliente escolhe o estabelecimento que conquistou sua
+            atenção primeiro. Seja no Instagram, nas avaliações ou no momento em que bate a fome. Um negócio de
+            gastronomia campeão não é apenas o mais gostoso. É aquele que sabe ser visto, desejado e lucrativo.</p>
         </div>
 
         <div class="thesis__grid reveal stagger">
@@ -3186,35 +3158,36 @@
             <p class="card__num">01</p>
             <h3 class="card__title">Ser visto</h3>
             <span class="card__role">Mídia e influência</span>
-            <p class="card__text">Restaurante que não aparece não é lembrado. Quem sabe usar influenciador do segmento,
-              rádio, programa e festival compra uma atenção que nenhum anúncio entrega sozinho, e compra pelo custo que
-              o concorrente da esquina não sabe negociar.</p>
+            <p class="card__text">Negócio que não aparece não é lembrado. Quem sabe usar influenciadores do segmento,
+              rádio, programas e festivais compra uma atenção que nenhum anúncio entrega sozinho, e consegue acessar
+              essa atenção de uma forma que o concorrente da esquina muitas vezes nem sabe negociar.</p>
           </article>
           <article class="card reveal">
             <p class="card__num">02</p>
             <h3 class="card__title">Ser desejado</h3>
             <span class="card__role">Posicionamento e rede social</span>
-            <p class="card__text">Seguidor não paga conta; desejo, sim. Perfil bem gerido não é vitrine de foto de
-              prato: é máquina de gerar vontade, justificar preço e transformar audiência em fila na porta numa
-              terça-feira comum.</p>
+            <p class="card__text">Seguidor não paga conta; desejo, sim. Perfil bem gerido não é apenas uma vitrine de
+              fotos de pratos. É uma ferramenta para gerar vontade, justificar preço e transformar audiência em
+              movimento até numa terça-feira comum.</p>
           </article>
           <article class="card reveal">
             <p class="card__num">03</p>
             <h3 class="card__title">Ser escolhido</h3>
             <span class="card__role">Experiência, recorrência e indicação</span>
             <p class="card__text">Uma marca pode atrair olhares e gerar desejo, mas é a experiência entregue que
-              transforma uma primeira compra em relacionamento. No restaurante, a comida é o principal ponto de contato:
-              sabor, qualidade e consistência são o que fazem o cliente voltar, consumir mais vezes e indicar para
-              outras pessoas. Quem entende a jornada completa do cliente não busca apenas novos consumidores; constrói
-              uma base fiel, aumenta a recorrência e transforma cada cliente em um ativo de longo prazo.</p>
+              transforma uma primeira compra em relacionamento. Em um negócio de gastronomia, a comida é o principal
+              ponto de contato: sabor, qualidade e consistência são o que fazem o cliente voltar, consumir mais vezes e
+              indicar para outras pessoas. Quem entende a jornada completa do cliente não busca apenas novos
+              consumidores. Constrói uma base fiel, aumenta a recorrência e transforma cada cliente em um ativo de longo
+              prazo.</p>
           </article>
           <article class="card card--fill reveal">
             <p class="card__num">04</p>
             <h3 class="card__title">Ser lucrativo</h3>
             <span class="card__role">Gestão, dados e IA</span>
-            <p class="card__text">Movimento sem número é sorte, e sorte acaba. Ticket médio, CMV, recorrência, custo por
-              cliente novo, horário de pico ocioso: quem enxerga esses dados e usa inteligência artificial na rotina
-              decide em minutos o que os outros levam meses para descobrir.</p>
+            <p class="card__text">Movimento sem número é sorte. E sorte acaba. Ticket médio, CMV, recorrência, custo
+              por cliente novo, horários de pico e períodos ociosos: quem enxerga esses dados e utiliza inteligência
+              artificial na rotina consegue tomar em minutos decisões que outros levam meses para descobrir.</p>
           </article>
         </div>
       </div>
@@ -3226,11 +3199,11 @@
         <div class="proof__head reveal">
           <div>
             <p class="eyebrow">A audiência que decide onde sua cidade vai comer</p>
-            <h2 class="h2 linha-anim" id="prova-title">Em uma cidade com mais de 14 mil restaurantes, a atenção virou o
-              principal ingrediente do crescimento.</h2>
+            <h2 class="h2 linha-anim" id="prova-title">Em uma cidade com mais de 40 mil estabelecimentos gastronômicos,
+              a atenção virou o principal ingrediente do crescimento.</h2>
           </div>
-          <p class="lead">Talvez o restaurante que está recebendo o seu cliente hoje não seja melhor que o seu. Ele
-            apenas conseguiu ser lembrado antes. Belo Horizonte tem mais de 14 mil estabelecimentos gastronômicos
+          <p class="lead">Talvez o estabelecimento que está recebendo o seu cliente hoje não seja melhor que o seu. Ele
+            apenas conseguiu ser lembrado antes. Belo Horizonte tem mais de 40 mil estabelecimentos gastronômicos
             disputando a atenção do mesmo cliente todos os dias. Ter uma boa comida é essencial, mas ser lembrado é o
             que faz o cliente escolher você. A Cozinha Campeã construiu uma grande audiência gastronômica em Minas
             Gerais, influenciando milhares de pessoas sobre onde comer.</p>
@@ -3293,7 +3266,7 @@
           <p class="eyebrow">A programação da noite</p>
           <h2 class="h2 linha-anim" id="programacao-title">Quatro horas para transformar reputação em movimento, e
             movimento em margem.</h2>
-          <p class="lead">Não é palestra motivacional. É diagnóstico, método e plano. Você entra com um restaurante e
+          <p class="lead">Não é palestra motivacional. É diagnóstico, método e plano. Você entra com o seu negócio e
             sai com uma lista do que fazer nos próximos 90 dias.</p>
         </div>
 
@@ -3303,8 +3276,8 @@
             <div class="tstep__card">
               <span class="tstep__time">18:00</span>
               <h3 class="tstep__title">Credenciamento e networking</h3>
-              <p class="tstep__text">Chegue cedo. A sala tem 100 donos de restaurante de Belo Horizonte. Parte do valor
-                da noite acontece antes do palco.</p>
+              <p class="tstep__text">Chegue cedo. A sala terá 100 donos de negócios da gastronomia de Belo Horizonte.
+                Parte do valor da noite acontece antes mesmo de subir ao palco.</p>
             </div>
           </li>
           <li class="tstep reveal">
@@ -3312,18 +3285,18 @@
             <div class="tstep__card">
               <span class="tstep__time">18:40</span>
               <h3 class="tstep__title">Abertura: Comida boa só, não paga a conta, com <i>Clara Senra</i></h3>
-              <p class="tstep__text">A anfitriã abre a noite com o que aprendeu circulando por centenas de cozinhas,
-                programas e festivais: por que alguns restaurantes viram destino e outros viram só mais uma opção no
-                aplicativo.</p>
+              <p class="tstep__text">A anfitriã abre a noite compartilhando o que aprendeu circulando por centenas de
+                cozinhas, programas e festivais: por que alguns negócios da gastronomia viram destino e outros acabam
+                sendo apenas mais uma opção no aplicativo?</p>
             </div>
           </li>
           <li class="tstep reveal">
             <span class="tstep__node" aria-hidden="true"><span>03</span></span>
             <div class="tstep__card">
               <span class="tstep__time">19:20</span>
-              <h3 class="tstep__title">O restaurante que aparece</h3>
+              <h3 class="tstep__title">O negócio que aparece</h3>
               <p class="tstep__text">Como funciona, na prática, a mecânica de mídia e influência no segmento de
-                alimentação: o que gera fila, o que gera só curtida e o que é dinheiro jogado fora.</p>
+                alimentação: o que gera fila, o que gera apenas curtida e o que é dinheiro jogado fora.</p>
             </div>
           </li>
           <li class="tstep reveal">
@@ -3331,8 +3304,8 @@
             <div class="tstep__card">
               <span class="tstep__time">20:00</span>
               <h3 class="tstep__title">Pausa e networking</h3>
-              <p class="tstep__text">Vinte minutos para tomar um café e trocar com quem vive o mesmo problema que você.
-              </p>
+              <p class="tstep__text">Vinte minutos para tomar um café e trocar experiências com quem vive desafios
+                parecidos com os seus.</p>
             </div>
           </li>
           <li class="tstep reveal">
@@ -3340,9 +3313,9 @@
             <div class="tstep__card">
               <span class="tstep__time">20:20</span>
               <h3 class="tstep__title">Gestão de alta performance, com <i>Gabriel Soares, da V4 Company</i></h3>
-              <p class="tstep__text">Os números que todo dono de restaurante deveria olhar toda segunda-feira, onde está
-                o gargalo real do seu faturamento e como a inteligência artificial encurta a distância entre o dado e a
-                decisão.</p>
+              <p class="tstep__text">Os números que todo dono de negócio da gastronomia deveria olhar toda
+                segunda-feira, onde está o gargalo real do seu faturamento e como a inteligência artificial pode
+                encurtar a distância entre o dado e a decisão.</p>
             </div>
           </li>
           <li class="tstep reveal">
@@ -3350,8 +3323,8 @@
             <div class="tstep__card">
               <span class="tstep__time">21:00</span>
               <h3 class="tstep__title">Mapa de oportunidades ao vivo</h3>
-              <p class="tstep__text">Casos reais de restaurantes destrinchados na frente da sala. Você vai reconhecer o
-                seu em pelo menos um deles.</p>
+              <p class="tstep__text">Casos reais de negócios da gastronomia destrinchados na frente da sala. Você
+                provavelmente vai reconhecer o seu em pelo menos um deles.</p>
             </div>
           </li>
           <li class="tstep reveal">
@@ -3368,7 +3341,8 @@
             <div class="tstep__card">
               <span class="tstep__time">22:00</span>
               <h3 class="tstep__title">Encerramento</h3>
-              <p class="tstep__text">Conversa aberta com Clara, com o time da V4 e com os outros donos da sala.</p>
+              <p class="tstep__text">Conversa aberta com Clara, com o time da V4 e com os outros donos de negócios
+                presentes na sala.</p>
             </div>
           </li>
         </ol>
@@ -3390,12 +3364,12 @@
             <h2 class="h2 linha-anim" id="clara-title">Clara Senra</h2>
             <p class="host__role">Jornalista gastronômica · Apresentadora do Cozinha Campeã · Criadora do ecossistema
               Cozinha Campeã</p>
-            <p class="host__bio">Mineira de Belo Horizonte, Clara é jornalista gastronômica desde 2011 e construiu o que
-              quase nenhum restaurante consegue construir sozinho: autoridade e audiência ao mesmo tempo. Passou pelo
-              MasterChef Brasil em 2015, pela PUC TV, pelo Canal Futura e pela Band Minas, e desde 2023 está na
-              Itatiaia, onde assina a editoria de gastronomia e apresenta o Cozinha Campeã. Hoje transforma repertório
-              editorial em produtos, experiências e negócios, e conhece por dentro a diferença entre o restaurante que
-              aparece e o restaurante que fatura.</p>
+            <p class="host__bio">Mineira de Belo Horizonte, Clara é jornalista gastronômica desde 2011 e construiu algo
+              que quase nenhum negócio da gastronomia consegue construir sozinho: autoridade e audiência ao mesmo tempo.
+              Passou pelo MasterChef Brasil em 2015, pela PUC TV, pelo Canal Futura e pela Band Minas, e desde 2023 está
+              na Itatiaia, onde assina a editoria de gastronomia e apresenta o Cozinha Campeã. Hoje transforma
+              repertório editorial em produtos, experiências e negócios, e conhece por dentro a diferença entre o
+              negócio que aparece e o negócio que fatura.</p>
             <p class="host__quote">Carisma para aproximar. Credibilidade para recomendar. Consistência para converter.
             </p>
           </div>
@@ -3423,8 +3397,8 @@
             <p class="guest__bio">A V4 Company é a maior operação de assessoria de marketing e vendas do Brasil, com
               metodologia própria de crescimento aplicada a milhares de negócios. À frente da unidade de Minas Gerais,
               Gabriel conduz operações de gestão comercial, tráfego, dados e inteligência artificial, e o setor de
-              alimentação é um dos que mais passam pela sua mesa. Na noite do 29, ele traz o lado que quase nunca entra
-              na conversa de restaurante: o número.</p>
+              alimentação é um dos que mais passam pela sua mesa. Na noite do dia 29, ele traz para a conversa um lado
+              que muitas vezes fica de fora da gestão dos negócios da gastronomia: o número.</p>
             <ul class="guest__stats reveal stagger">
               <li><b>+6 anos</b><span>de operação</span></li>
               <li><b>+500</b><span>restaurantes atendidos</span></li>
@@ -3458,8 +3432,9 @@
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                   stroke-linejoin="round" aria-hidden="true">
                   <path d="m4 12 5 5L20 6" />
-                </svg><span>Você tem um restaurante com potencial e quer colocá-lo entre os negócios mais lembrados da
-                  cidade</span></li>
+                </svg><span>Você tem um restaurante, bar, cafeteria, padaria, lanchonete, confeitaria, hamburgueria,
+                  delivery, casa de eventos ou outro negócio da gastronomia com potencial e quer colocá-lo entre os
+                  negócios mais lembrados da cidade</span></li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                   stroke-linejoin="round" aria-hidden="true">
                   <path d="m4 12 5 5L20 6" />
@@ -3505,8 +3480,8 @@
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                   aria-hidden="true">
                   <path d="M5 12h14" />
-                </svg><span>Você não quer acompanhar os números do seu próprio negócio e quer continuar decidindo tudo
-                  no feeling</span></li>
+                </svg><span>Você não quer acompanhar os números do seu próprio negócio e prefere continuar decidindo
+                  tudo no feeling</span></li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                   aria-hidden="true">
                   <path d="M5 12h14" />
@@ -3519,7 +3494,7 @@
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                   aria-hidden="true">
                   <path d="M5 12h14" />
-                </svg><span>Você acha que o problema do restaurante é sempre o mercado, a economia ou a
+                </svg><span>Você acha que o problema do seu negócio é sempre o mercado, a economia ou a
                   concorrência</span></li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                   aria-hidden="true">
@@ -3536,10 +3511,11 @@
       <div class="wrap dupla__inner">
         <div class="dupla__texto reveal">
           <p class="eyebrow">Venha com um colega de setor</p>
-          <h2 class="h2 linha-anim" id="dupla-title">Traga outro dono de restaurante e <em>os dois pagam R$ 57.</em>
+          <h2 class="h2 linha-anim" id="dupla-title">Traga outro dono de negócio da gastronomia e <em>os dois pagam R$
+              57.</em>
           </h2>
-          <p class="dupla__nota">A noite rende mais quando você tem com quem trocar depois. Cada um faz a própria
-            inscrição e ocupa uma das 100 vagas.</p>
+          <p class="dupla__nota">A noite rende mais quando você tem com quem trocar depois. Cada participante faz a
+            própria inscrição e ocupa uma das 100 vagas.</p>
         </div>
 
         <div class="dupla__painel reveal">
@@ -3589,11 +3565,11 @@
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
                   stroke-linejoin="round" aria-hidden="true">
                   <path d="m4 12 5 5L20 6" />
-                </svg><span>Plano de 90 dias para o seu restaurante, construído durante o evento</span></li>
+                </svg><span>Plano de 90 dias para o seu negócio, construído durante o evento</span></li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
                   stroke-linejoin="round" aria-hidden="true">
                   <path d="m4 12 5 5L20 6" />
-                </svg><span>Networking direto com 100 donos de restaurante de Belo Horizonte</span></li>
+                </svg><span>Networking direto com 100 donos de negócios da gastronomia de Belo Horizonte</span></li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
                   stroke-linejoin="round" aria-hidden="true">
                   <path d="m4 12 5 5L20 6" />
@@ -3605,7 +3581,7 @@
                 <path d="M12 9v4M12 17h.01" />
                 <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
               </svg>
-              <span>A sala tem <b>100 lugares</b>. Quando o último for preenchido, as inscrições encerram e não há
+              <span>A sala tem <b>100 lugares</b>. Quando o último for preenchido, as inscrições encerram e não haverá
                 segunda turma em 2026.</span>
             </p>
           </div>
@@ -3617,7 +3593,7 @@
             </p>
 
             <div class="ticket__body">
-              <p class="ticket__tipo">Ingresso VIP · Dono de restaurante</p>
+              <p class="ticket__tipo">Ingresso VIP · Dono de negócio da gastronomia</p>
 
               <p class="ticket__price" id="offerPrice">
                 <sup>R$</sup><b id="offerValue">97</b>
@@ -3761,9 +3737,9 @@
       <div class="wrap final__inner">
         <div class="reveal">
           <p class="eyebrow">São 100 lugares</p>
-          <h2 class="h2 linha-anim" id="final-title">Garanta sua vaga no <em>Restaurante Campeão</em>.</h2>
-          <p class="final__lead">Preencha os dados do seu restaurante e siga para o pagamento. <b>R$ 97 por pessoa</b>,
-            ou <b>R$ 57 cada</b> se você trouxer outro dono de restaurante.</p>
+          <h2 class="h2 linha-anim" id="final-title">Garanta sua vaga no <em>Cozinha Campeã</em>.</h2>
+          <p class="final__lead">Preencha os dados do seu negócio e siga para o pagamento. <b>R$ 97 por pessoa</b>, ou
+            <b>R$ 57 cada</b> se você trouxer outro dono de negócio da gastronomia.</p>
 
           <ul class="final__list">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
@@ -3835,24 +3811,29 @@
             </div>
 
             <div class="field">
-              <label for="restaurante">Nome do restaurante</label>
-              <input type="text" id="restaurante" name="restaurante" placeholder="Nome da sua casa" required
+              <label for="restaurante">Nome do negócio</label>
+              <input type="text" id="restaurante" name="restaurante" placeholder="Nome do seu negócio" required
                 autocomplete="organization" />
-              <p class="field__erro" data-erro-de="restaurante">Informe o nome do restaurante.</p>
+              <p class="field__erro" data-erro-de="restaurante">Informe o nome do negócio.</p>
             </div>
 
             <div class="form-row">
               <div class="field">
-                <label for="tipo">Tipo de casa</label>
+                <label for="tipo">Tipo de negócio</label>
                 <select id="tipo" name="tipo" required>
                   <option value="" disabled selected>Selecione</option>
                   <option value="restaurante">Restaurante</option>
                   <option value="bar">Bar</option>
-                  <option value="cafe">Café</option>
+                  <option value="cafeteria">Cafeteria</option>
+                  <option value="padaria">Padaria</option>
+                  <option value="lanchonete">Lanchonete</option>
+                  <option value="confeitaria">Confeitaria</option>
+                  <option value="hamburgueria">Hamburgueria</option>
+                  <option value="delivery">Delivery</option>
                   <option value="casa-eventos">Casa de eventos</option>
                   <option value="outro">Outro</option>
                 </select>
-                <p class="field__erro" data-erro-de="tipo">Selecione o tipo de casa.</p>
+                <p class="field__erro" data-erro-de="tipo">Selecione o tipo de negócio.</p>
               </div>
               <div class="field">
                 <label for="faturamento">Faturamento mensal</label>
@@ -3901,9 +3882,9 @@
                   </div>
                 </div>
                 <div class="field">
-                  <label for="conv1_restaurante">Restaurante do convidado</label>
+                  <label for="conv1_restaurante">Negócio do convidado</label>
                   <input type="text" id="conv1_restaurante" class="conv-restaurante" name="conv1_restaurante"
-                    placeholder="Nome da casa dele(a)" autocomplete="off" disabled />
+                    placeholder="Nome do negócio dele(a)" autocomplete="off" disabled />
                 </div>
               </div>
             </div>
@@ -3943,8 +3924,8 @@
           <div class="faq__aside reveal">
             <p class="eyebrow">Perguntas frequentes</p>
             <h2 class="h2 linha-anim" id="faq-title">Antes de garantir sua vaga.</h2>
-            <p class="lead">Reunimos o que os donos de restaurante mais perguntam antes de fechar a inscrição. Se a sua
-              dúvida não estiver aqui, fale com a organização.</p>
+            <p class="lead">Reunimos o que os donos de negócios da gastronomia mais perguntam antes de fechar a
+              inscrição. Se a sua dúvida não estiver aqui, fale com a organização.</p>
             <a class="faq__contato" href="#oferta" data-checkout>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round" aria-hidden="true">
@@ -3956,17 +3937,18 @@
           <div class="faq__list reveal stagger">
             <details class="faq__item" name="faq">
               <summary>Para quem é esse evento?</summary>
-              <p>Para donos e sócios de restaurantes, bares, cafés e casas de eventos. Se você não decide sobre o
+              <p>Para donos e sócios de restaurantes, bares, cafeterias, padarias, lanchonetes, confeitarias,
+                hamburguerias, delivery, casas de eventos e outros negócios da gastronomia. Se você não decide sobre o
                 negócio, o conteúdo vai render menos para você.</p>
             </details>
             <details class="faq__item" name="faq">
               <summary>Preciso entender de marketing?</summary>
-              <p>Não. A noite foi desenhada para quem opera restaurante, não para quem trabalha com marketing. Nada será
-                explicado em código.</p>
+              <p>Não. A noite foi desenhada para quem opera um negócio da gastronomia, não para quem trabalha com
+                marketing. Nada será explicado em código.</p>
             </details>
             <details class="faq__item" name="faq">
               <summary>Vou sair com alguma coisa na mão?</summary>
-              <p>Sim. O plano de 90 dias é construído durante o evento, com o seu restaurante como base.</p>
+              <p>Sim. O plano de 90 dias é construído durante o evento, tendo o seu negócio como base.</p>
             </details>
             <details class="faq__item" name="faq">
               <summary>Vai ter transmissão ou gravação?</summary>
@@ -4017,11 +3999,6 @@
       </div>
     </div>
   </footer>
-
-  <!-- ===================== CTA FLUTUANTE MOBILE ===================== -->
-  <div class="mobile-cta" id="mobileCta">
-    <a class="btn btn--block" href="#oferta" data-checkout>Garantir minha vaga</a>
-  </div>
 
   <script>
     /* ===================================================================
@@ -4432,21 +4409,6 @@
           }
         });
       }
-    })();
-
-    /* ===== CTA flutuante no mobile: aparece depois do hero ===== */
-    (function () {
-      var bar = document.getElementById('mobileCta');
-      var hero = document.getElementById('topo');
-      if (!bar || !hero) { return; }
-      function atualizar() {
-        var passouDoHero = hero.getBoundingClientRect().bottom < 0;
-        if (passouDoHero) { bar.classList.add('is-on'); }
-        else { bar.classList.remove('is-on'); }
-      }
-      window.addEventListener('scroll', atualizar, { passive: true });
-      window.addEventListener('resize', atualizar, { passive: true });
-      atualizar();
     })();
 
     /* ===== Tracking GTM / dataLayer ===== */
