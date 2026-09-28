@@ -1,0 +1,12 @@
+# segredos: nunca versionar
+.env
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# sistema
+.DS_Store
+Thumbs.db

@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Diagnóstico Cozinha Campeã</title>
+  <link rel="icon" href="/static/img/favicon.ico" sizes="any" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --vermelho: #E30613;
+      --carvao: #171719;
+      --cinza-texto: #625E58;
+      --cinza-claro: #9A968F;
+      --borda: rgba(23, 23, 25, .12);
+      --font: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100svh;
+      font-family: var(--font);
+      color: var(--carvao);
+      background: #F4F4F5;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---------- barra de progresso ---------- */
+    .topo {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #fff;
+      border-bottom: 1px solid var(--borda);
+      padding: .9rem 1.25rem .75rem;
+    }
+
+    .topo__linha {
+      max-width: 620px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    /* lockup de marcas: Cozinha Campeã × V4 Company */
+    .lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      white-space: nowrap;
+    }
+
+    .lockup__cc {
+      height: 28px;
+      width: auto;
+    }
+
+    .lockup__v4 {
+      height: 17px;
+      width: auto;
+    }
+
+    .lockup i {
+      font-style: normal;
+      font-weight: 400;
+      font-size: .8125rem;
+      line-height: 1;
+      color: var(--cinza-texto);
+      opacity: .5;
+    }
+
+    .topo__contador {
+      font-size: .6875rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--cinza-claro);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .barra {
+      max-width: 620px;
+      margin: .7rem auto 0;
+      height: 4px;
+      border-radius: 99px;
+      background: rgba(23, 23, 25, .08);
+      overflow: hidden;
+    }
+
+    .barra__preenchida {
+      height: 100%;
+      width: 0;
+      background: var(--vermelho);
+      border-radius: 99px;
+      transition: width .35s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    /* ---------- palco ---------- */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 1.75rem 1.25rem 2.5rem;
+    }
+
+    .palco {
+      width: 100%;
+      max-width: 620px;
+    }
+
+    .passo {
+      animation: entra .28s ease both;
+    }
+
+    @keyframes entra {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+
+      .passo,
+      .barra__preenchida {
+        animation: none;
+        transition: none;
+      }
+    }
+
+    .etapa {
+      margin: 0 0 .5rem;
+      font-size: .625rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--vermelho);
+    }
+
+    h1 {
+      margin: 0 0 1.5rem;
+      font-size: clamp(1.25rem, 1.05rem + 1vw, 1.625rem);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -.02em;
+    }
+
+    .sub {
+      margin: -1rem 0 1.5rem;
+      font-size: .875rem;
+      line-height: 1.5;
+      color: var(--cinza-texto);
+    }
+
+    /* ---------- opcoes ---------- */
+    .opcoes {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+
+    .opcao {
+      display: flex;
+      align-items: center;
+      gap: .85rem;
+      width: 100%;
+      padding: 1rem 1.15rem;
+      font-family: var(--font);
+      font-size: .9375rem;
+      line-height: 1.35;
+      font-weight: 500;
+      text-align: left;
+      color: var(--carvao);
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: border-color .18s ease, background .18s ease, transform .12s ease;
+    }
+
+    .opcao:hover {
+      border-color: rgba(227, 6, 19, .45);
+    }
+
+    .opcao:active {
+      transform: scale(.99);
+    }
+
+    .opcao.is-on {
+      border-color: var(--vermelho);
+      background: rgba(227, 6, 19, .05);
+    }
+
+    .opcao__marca {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid rgba(23, 23, 25, .2);
+      display: grid;
+      place-items: center;
+      transition: border-color .18s ease, background .18s ease;
+    }
+
+    .opcao.is-on .opcao__marca {
+      border-color: var(--vermelho);
+      background: var(--vermelho);
+    }
+
+    .opcao__marca::after {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
+
+    .opcao.is-on .opcao__marca::after {
+      opacity: 1;
+    }
+
+    /* ---------- campos ---------- */
+    .campo {
+      margin-bottom: 1rem;
+    }
+
+    .campo label {
+      display: block;
+      margin-bottom: .45rem;
+      font-size: .6875rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--cinza-texto);
+    }
+
+    .campo input[type="text"],
+    .campo input[type="tel"] {
+      width: 100%;
+      height: 52px;
+      padding: 0 1rem;
+      font-family: var(--font);
+      font-size: 1rem;
+      color: var(--carvao);
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color .2s ease;
+    }
+
+    .campo input:focus {
+      border-color: var(--vermelho);
+    }
+
+    /* aceite LGPD */
+    .aceite {
+      display: flex;
+      align-items: flex-start;
+      gap: .7rem;
+      margin-top: 1.25rem;
+      padding: .95rem 1rem;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .aceite input {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin: 1px 0 0;
+      accent-color: var(--vermelho);
+      cursor: pointer;
+    }
+
+    .aceite span {
+      font-size: .8125rem;
+      line-height: 1.5;
+      color: var(--cinza-texto);
+    }
+
+    .opcional {
+      margin: -.6rem 0 0;
+      font-size: .75rem;
+      color: var(--cinza-claro);
+    }
+
+    /* ---------- botoes ---------- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      width: 100%;
+      height: 52px;
+      margin-top: 1.25rem;
+      font-family: var(--font);
+      font-size: .8125rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--vermelho);
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: filter .2s ease, opacity .2s ease;
+    }
+
+    .btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .voltar {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      margin-top: 1.25rem;
+      padding: .5rem 0;
+      font-family: var(--font);
+      font-size: .8125rem;
+      font-weight: 600;
+      color: var(--cinza-texto);
+      background: none;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .voltar:hover {
+      color: var(--carvao);
+    }
+
+    .erro {
+      margin: .85rem 0 0;
+      font-size: .8125rem;
+      font-weight: 600;
+      color: var(--vermelho);
+    }
+
+    .aviso {
+      margin: -1rem 0 1.15rem;
+      padding: .6rem .85rem;
+      border-radius: 8px;
+      background: rgba(227, 6, 19, .07);
+      border-left: 3px solid var(--vermelho);
+      font-size: .8125rem;
+      font-weight: 600;
+      color: var(--vermelho);
+    }
+
+    /* ---------- resultado ---------- */
+    .resultado {
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 2.25rem 1.5rem;
+    }
+
+    .resultado__selo {
+      display: inline-block;
+      padding: .35rem .85rem;
+      border-radius: 99px;
+      background: rgba(227, 6, 19, .08);
+      color: var(--vermelho);
+      font-size: .6875rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .resultado__nivel {
+      margin: 1rem 0 .25rem;
+      font-size: clamp(1.75rem, 1.4rem + 1.8vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -.03em;
+      line-height: 1.05;
+    }
+
+    .resultado__media {
+      margin: 0 0 1.75rem;
+      font-size: .9375rem;
+      color: var(--cinza-texto);
+    }
+
+    .notas {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      text-align: left;
+      border-top: 1px solid var(--borda);
+    }
+
+    .notas li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .7rem 0;
+      border-bottom: 1px solid var(--borda);
+      font-size: .875rem;
+    }
+
+    .notas b {
+      font-size: 1rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--vermelho);
+    }
+
+    .resultado__nota {
+      margin: 1.75rem 0 0;
+      font-size: .8125rem;
+      line-height: 1.55;
+      color: var(--cinza-texto);
+    }
+
+    /* ---------- score / radar ---------- */
+    .score {
+      margin: 1.1rem 0 .15rem;
+      font-size: clamp(3.5rem, 2.6rem + 4.5vw, 5rem);
+      font-weight: 700;
+      line-height: .9;
+      letter-spacing: -.05em;
+      color: var(--vermelho);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .score small {
+      font-size: .25em;
+      font-weight: 600;
+      letter-spacing: 0;
+      color: var(--cinza-claro);
+      margin-left: .15em;
+    }
+
+    .score-rotulo {
+      margin: 0 0 1.1rem;
+      font-size: .625rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--cinza-claro);
+    }
+
+    .mensagem {
+      margin: .9rem auto 0;
+      max-width: 44ch;
+      font-size: .9375rem;
+      line-height: 1.55;
+      color: var(--cinza-texto);
+    }
+
+    .radar-svg {
+      display: block;
+      width: 100%;
+      max-width: 380px;
+      height: auto;
+      margin: 1.5rem auto .25rem;
+    }
+
+    .radar-legenda {
+      font-size: .75rem;
+      color: var(--cinza-claro);
+    }
+
+    .trava {
+      margin-top: 1.5rem;
+      padding: .9rem 1rem;
+      text-align: left;
+      border-left: 3px solid var(--vermelho);
+      background: #FAFAF9;
+      font-size: .875rem;
+      line-height: 1.5;
+      color: var(--cinza-texto);
+    }
+
+    .trava b {
+      color: var(--carvao);
+    }
+
+    /* ---------- plano de 90 dias ---------- */
+    .plano {
+      margin-top: 1rem;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 1.75rem 1.35rem;
+    }
+
+    .plano h2 {
+      margin: 0 0 .3rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .plano__titulo {
+      margin: 0 0 1.5rem;
+      font-size: .875rem;
+      line-height: 1.5;
+      color: var(--cinza-texto);
+    }
+
+    .bloco {
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      padding: 1.1rem 1.15rem;
+      margin-bottom: .85rem;
+    }
+
+    .bloco.is-foco {
+      border-color: var(--vermelho);
+      background: rgba(227, 6, 19, .04);
+    }
+
+    .bloco__topo {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      flex-wrap: wrap;
+      margin-bottom: .9rem;
+    }
+
+    .bloco__nome {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+
+    .bloco__tag {
+      font-size: .5625rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--vermelho);
+      border-radius: 99px;
+      padding: .22rem .55rem;
+    }
+
+    .mes {
+      display: grid;
+      grid-template-columns: minmax(0, 118px) minmax(0, 1fr);
+      gap: .3rem .9rem;
+      padding: .7rem 0;
+      border-top: 1px solid var(--borda);
+    }
+
+    .mes__quando {
+      font-size: .6875rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--cinza-claro);
+      padding-top: .12rem;
+    }
+
+    .mes__oque {
+      font-size: .875rem;
+      line-height: 1.5;
+      color: var(--carvao);
+    }
+
+    .metas {
+      margin: 1.25rem 0 0;
+      padding: .95rem 1.1rem;
+      border-radius: 10px;
+      background: var(--carvao);
+      color: #fff;
+      font-size: .8125rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 460px) {
+      .mes {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* ---------- baixar em PDF ---------- */
+    .acoes-pdf {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .btn-pdf {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      width: 100%;
+      height: 50px;
+      font-family: var(--font);
+      font-size: .8125rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--carvao);
+      background: #fff;
+      border: 1px solid rgba(23, 23, 25, .28);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .btn-pdf:hover {
+      border-color: var(--carvao);
+      background: #FAFAF9;
+    }
+
+    .btn-pdf svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .dica-pdf {
+      margin: .6rem 0 0;
+      font-size: .75rem;
+      line-height: 1.5;
+      color: var(--cinza-claro);
+    }
+
+    /* o que sai no papel / no PDF */
+    @media print {
+      @page {
+        margin: 14mm;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .topo,
+      .acoes-pdf,
+      .voltar {
+        display: none !important;
+      }
+
+      main {
+        padding: 0;
+      }
+
+      .palco {
+        max-width: none;
+      }
+
+      .passo {
+        animation: none;
+      }
+
+      .resultado,
+      .plano {
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        margin: 0 0 14pt;
+      }
+
+      .marca-pdf {
+        display: block !important;
+      }
+
+      /* nada de bloco do plano partido ao meio entre páginas */
+      .bloco {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        border-color: #CFCFD4;
+      }
+
+      .bloco.is-foco {
+        background: #FBECEC;
+      }
+
+      .metas {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .score,
+      .bloco__tag,
+      .notas b,
+      .resultado__selo {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    .marca-pdf {
+      display: none;
+      margin-bottom: 10pt;
+      padding-bottom: 8pt;
+      border-bottom: 1px solid var(--borda);
+      text-align: left;
+      font-size: .8125rem;
+      color: var(--cinza-texto);
+    }
+
+    .marca-pdf b {
+      display: block;
+      font-size: 1rem;
+      color: var(--carvao);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topo">
+    <div class="topo__linha">
+      <span class="lockup">
+        <img class="lockup__cc" src="/static/img/logos/cozinha-campea.png" alt="Cozinha Campeã" />
+        <i aria-hidden="true">×</i>
+        <img class="lockup__v4" src="/static/img/logos/v4-vermelho.png" alt="V4 Company" />
+      </span>
+      <span class="topo__contador" id="contador">Diagnóstico</span>
+    </div>
+    <div class="barra">
+      <div class="barra__preenchida" id="progresso"></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="palco" id="palco"></div>
+  </main>
+
+  <script>
+    var PERGUNTAS = {{ perguntas | tojson }};
+    var RESULTADO = {{ (resultado or none) | tojson }};
+
+    /* passos: 0..N-1 = perguntas, N = contato */
+    var TOTAL = PERGUNTAS.length + 1;
+    var passo = 0;
+    var dados = {
+      nome: '', restaurante: '', whatsapp: '', aceite_contato: false, respostas: {}
+    };
+
+    var palco = document.getElementById('palco');
+    var progresso = document.getElementById('progresso');
+    var contador = document.getElementById('contador');
+
+    /* trava cliques repetidos durante a transição: dois toques rápidos na mesma
+       tela avançavam dois passos e deixavam uma pergunta sem resposta */
+    var avancando = false;
+
+    function esc(t) {
+      return String(t).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    function atualizarProgresso(feito) {
+      progresso.style.width = Math.round(feito * 100 / TOTAL) + '%';
+      if (feito >= TOTAL) { contador.textContent = 'Concluído'; }
+      else { contador.textContent = (feito + 1) + ' de ' + TOTAL; }
+    }
+
+    function botaoVoltar() {
+      if (passo === 0) { return ''; }
+      return '<button class="voltar" id="btnVoltar">&larr; Voltar</button>';
+    }
+
+    function ligarVoltar() {
+      var b = document.getElementById('btnVoltar');
+      if (b) {
+        b.onclick = function () {
+          if (avancando) { return; }
+          avancando = true;
+          passo--;
+          render();
+        };
+      }
+    }
+
+    /* primeira pergunta ainda sem resposta (-1 se está tudo respondido) */
+    function primeiraPendente() {
+      for (var i = 0; i < PERGUNTAS.length; i++) {
+        if (!dados.respostas[PERGUNTAS[i].id]) { return i; }
+      }
+      return -1;
+    }
+
+    /* ---------- pergunta ---------- */
+    function telaPergunta(indice, avisar) {
+      var p = PERGUNTAS[indice];
+      var selecionada = dados.respostas[p.id];
+      var html =
+        '<div class="passo">' +
+        '<p class="etapa">' + esc(p.etapa) + '</p>' +
+        '<h1>' + esc(p.pergunta) + '</h1>' +
+        (avisar ? '<p class="aviso">Escolha uma opção para continuar.</p>' : '') +
+        '<div class="opcoes">';
+      p.opcoes.forEach(function (op, i) {
+        html += '<button class="opcao' + (op === selecionada ? ' is-on' : '') + '" data-i="' + i + '">' +
+          '<span class="opcao__marca"></span><span>' + esc(op) + '</span></button>';
+      });
+      html += '</div>' + botaoVoltar() + '</div>';
+      palco.innerHTML = html;
+
+      var botoes = palco.querySelectorAll('.opcao');
+      botoes.forEach(function (b) {
+        b.onclick = function () {
+          /* só o primeiro toque conta enquanto a tela troca */
+          if (avancando) { return; }
+          avancando = true;
+          botoes.forEach(function (o) { o.classList.remove('is-on'); });
+          b.classList.add('is-on');
+          dados.respostas[p.id] = p.opcoes[Number(b.getAttribute('data-i'))];
+          /* pequena pausa só para o clique ser visto antes de avançar */
+          setTimeout(function () { passo++; render(); }, 180);
+        };
+      });
+      ligarVoltar();
+    }
+
+    /* ---------- contato (no fim, antes do resultado) ---------- */
+    function telaContato() {
+      palco.innerHTML =
+        '<div class="passo">' +
+        '<p class="etapa">Última etapa</p>' +
+        '<h1>Para onde enviamos o seu plano de ação?</h1>' +
+        '<p class="sub">Seu resultado aparece na próxima tela de qualquer forma.</p>' +
+        '<div class="campo"><label for="nome">Seu nome</label>' +
+        '<input id="nome" type="text" autocomplete="name" placeholder="Nome e sobrenome" value="' + esc(dados.nome) + '" /></div>' +
+        '<div class="campo"><label for="restaurante">Nome do restaurante</label>' +
+        '<input id="restaurante" type="text" autocomplete="organization" placeholder="Nome do seu negócio" value="' + esc(dados.restaurante) + '" /></div>' +
+        '<div class="campo"><label for="whatsapp">WhatsApp</label>' +
+        '<input id="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" value="' + esc(dados.whatsapp) + '" /></div>' +
+        '<p class="opcional">O WhatsApp só é usado se você autorizar abaixo.</p>' +
+        '<label class="aceite"><input type="checkbox" id="aceite"' + (dados.aceite_contato ? ' checked' : '') + ' />' +
+        '<span>Autorizo a Cozinha Campeã e a V4 Company a usarem meus dados para me enviar o plano de ação ' +
+        'e entrar em contato sobre o diagnóstico.</span></label>' +
+        '<button class="btn" id="btnEnviar">Ver meu resultado</button>' +
+        '<p class="erro" id="erro" hidden></p>' +
+        botaoVoltar() +
+        '</div>';
+
+      document.getElementById('btnEnviar').onclick = function () {
+        var erro = document.getElementById('erro');
+        dados.nome = document.getElementById('nome').value.trim();
+        dados.restaurante = document.getElementById('restaurante').value.trim();
+        dados.whatsapp = document.getElementById('whatsapp').value.trim();
+        dados.aceite_contato = document.getElementById('aceite').checked;
+        if (dados.nome.length < 2 || dados.restaurante.length < 2) {
+          erro.textContent = 'Preencha seu nome e o nome do restaurante.';
+          erro.hidden = false;
+          return;
+        }
+        passo++;
+        render();
+      };
+      ligarVoltar();
+    }
+
+    /* ---------- resultado ---------- */
+    function telaEnviando() {
+      palco.innerHTML = '<div class="passo"><h1>Calculando seu diagnóstico…</h1></div>';
+    }
+
+    /* radar dos 4 pilares, escala 0 a 5 (score / 20), meta 4 */
+    function radarSvg(pilares, meta, max) {
+      var cx = 200, cy = 150, raio = 78, partes = [];
+
+      function pts(valores, r) {
+        return valores.map(function (v, i) {
+          var ang = (Math.PI * 2 * i / valores.length) - Math.PI / 2;
+          var d = (Math.max(0, v) / max) * r;
+          return (cx + d * Math.cos(ang)).toFixed(1) + ',' + (cy + d * Math.sin(ang)).toFixed(1);
+        }).join(' ');
+      }
+
+      for (var anel = 1; anel <= max; anel++) {
+        partes.push('<polygon points="' + pts(pilares.map(function () { return anel; }), raio) +
+          '" fill="none" stroke="#E6E6EA" stroke-width="1" />');
+      }
+      partes.push('<polygon points="' + pts(pilares.map(function () { return meta; }), raio) +
+        '" fill="none" stroke="#171719" stroke-width="1.6" stroke-dasharray="4 3" />');
+      partes.push('<polygon points="' + pts(pilares.map(function (p) { return p.radar; }), raio) +
+        '" fill="rgba(227,6,19,.22)" stroke="#E30613" stroke-width="2.4" />');
+
+      pilares.forEach(function (p, i) {
+        var ang = (Math.PI * 2 * i / pilares.length) - Math.PI / 2;
+        var lx = cx + (raio + 26) * Math.cos(ang);
+        var ly = cy + (raio + 26) * Math.sin(ang);
+        var ancora = lx > cx + 8 ? 'start' : (lx < cx - 8 ? 'end' : 'middle');
+        partes.push('<text x="' + lx.toFixed(1) + '" y="' + (ly + 4).toFixed(1) +
+          '" text-anchor="' + ancora + '" font-size="11.5" font-weight="600" ' +
+          'font-family="inherit" fill="#171719">' + esc(p.nome) + '</text>');
+        partes.push('<text x="' + lx.toFixed(1) + '" y="' + (ly + 17).toFixed(1) +
+          '" text-anchor="' + ancora + '" font-size="11" font-family="inherit" ' +
+          'fill="#E30613" font-weight="700">' + p.score + '</text>');
+      });
+
+      return '<svg class="radar-svg" viewBox="0 0 400 300" role="img" ' +
+        'aria-label="Radar dos quatro pilares">' + partes.join('') + '</svg>';
+    }
+
+    function telaResultado(r) {
+      var trava = '<div class="trava">O que mais trava hoje: <b>' + esc(r.pilar_fraco) +
+        '</b> (' + esc(r.nivel_pilar_fraco) + ').' +
+        (r.travado
+          ? ' Pelo score geral você estaria em ' + esc(r.nivel_por_score) +
+            ', mas a decisão vem do pilar mais fraco — é por ele que o plano começa.'
+          : ' É por ele que o plano começa.') +
+        '</div>';
+
+      var blocos = r.plano.linhas.map(function (linha) {
+        var meses = linha.acoes.map(function (acao, i) {
+          return '<div class="mes"><span class="mes__quando">' + esc(r.plano.meses[i]) +
+            '</span><span class="mes__oque">' + esc(acao) + '</span></div>';
+        }).join('');
+        return '<div class="bloco' + (linha.destaque ? ' is-foco' : '') + '">' +
+          '<div class="bloco__topo"><span class="bloco__nome">' + esc(linha.nome) + '</span>' +
+          (linha.destaque ? '<span class="bloco__tag">Comece por aqui</span>' : '') +
+          '</div>' + meses + '</div>';
+      }).join('');
+
+      /* cabeçalho que só aparece no PDF, para o documento sair identificado */
+      var cabecalhoPdf = '';
+      if (r.nome || r.restaurante) {
+        cabecalhoPdf = '<div class="marca-pdf">Diagnóstico Cozinha Campeã × V4 Company' +
+          '<b>' + esc(r.restaurante || '') +
+          (r.nome ? ' · ' + esc(r.nome) : '') + '</b></div>';
+      }
+
+      palco.innerHTML =
+        '<div class="passo">' +
+        cabecalhoPdf +
+        '<div class="resultado">' +
+        '<span class="resultado__selo">Seu diagnóstico</span>' +
+        '<p class="score">' + r.score_geral + '<small>/100</small></p>' +
+        '<p class="score-rotulo">Score geral · ' + r.total + ' de ' + r.maximo + ' pontos</p>' +
+        '<p class="resultado__nivel">' + esc(r.nivel) + ' · ' + esc(r.nivel_nome) + '</p>' +
+        '<p class="mensagem">' + esc(r.mensagem) + '</p>' +
+        radarSvg(r.pilares, r.meta, r.escala_radar) +
+        '<p class="radar-legenda">Cada pilar de 0 a 5 · linha tracejada = meta (4)</p>' +
+        trava +
+        '</div>' +
+        '<div class="plano">' +
+        '<h2>Seu plano de 90 dias</h2>' +
+        '<p class="plano__titulo">' + esc(r.nivel) + ' · ' + esc(r.nivel_nome) + ' — ' +
+        esc(r.plano.titulo) + '</p>' +
+        blocos +
+        '<p class="metas">' + esc(r.plano.metas) + '</p>' +
+        '</div>' +
+        '<div class="acoes-pdf">' +
+        '<button class="btn-pdf" id="btnPdf">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>' +
+        '</svg>Baixar em PDF</button>' +
+        '<p class="dica-pdf">Na janela de impressão, escolha <b>Salvar como PDF</b>.</p>' +
+        '</div>' +
+        '</div>';
+
+      /* o navegador usa o título como nome do arquivo ao salvar em PDF */
+      document.getElementById('btnPdf').onclick = function () {
+        var antes = document.title;
+        var quem = (r.restaurante || r.nome || '').replace(/[\\/:*?"<>|]/g, '').trim();
+        document.title = 'Diagnostico 90 dias' + (quem ? ' - ' + quem : '');
+        window.print();
+        setTimeout(function () { document.title = antes; }, 800);
+      };
+
+      atualizarProgresso(TOTAL);
+      window.scrollTo(0, 0);
+    }
+
+
+    function enviar() {
+      telaEnviando();
+      fetch('/diagnostico/api/responder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      })
+        .then(function (res) { return res.json().then(function (j) { return { ok: res.ok, j: j }; }); })
+        .then(function (r) {
+          if (!r.ok) { throw new Error(r.j.erro || 'Não foi possível enviar.'); }
+          telaResultado(r.j);
+        })
+        .catch(function (e) {
+          palco.innerHTML =
+            '<div class="passo"><h1>Não conseguimos enviar</h1>' +
+            '<p class="sub">' + esc(e.message) + '</p>' +
+            '<button class="btn" id="btnTentar">Tentar de novo</button></div>';
+          document.getElementById('btnTentar').onclick = enviar;
+        });
+    }
+
+    function render() {
+      avancando = false;
+      if (passo < 0) { passo = 0; }
+      if (passo < PERGUNTAS.length) {
+        atualizarProgresso(passo);
+        return telaPergunta(passo, false);
+      }
+      /* rede de segurança: nada de seguir para o contato ou para o envio com
+         alguma pergunta em branco — volta para ela em vez de falhar no servidor */
+      var pendente = primeiraPendente();
+      if (pendente >= 0) {
+        passo = pendente;
+        atualizarProgresso(passo);
+        return telaPergunta(passo, true);
+      }
+      atualizarProgresso(passo);
+      if (passo === PERGUNTAS.length) { return telaContato(); }
+      enviar();
+    }
+
+    /* quem já respondeu volta direto para o próprio resultado e plano */
+    if (RESULTADO) { telaResultado(RESULTADO); } else { render(); }
+  </script>
+</body>
+
+</html>

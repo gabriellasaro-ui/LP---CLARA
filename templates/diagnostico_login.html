@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Diagnóstico Comercial · V4 Company</title>
+  <link rel="icon" href="/static/img/favicon.ico" sizes="any" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --vermelho: #E30613;
+      --carvao: #171719;
+      --cinza-texto: #625E58;
+      --borda: rgba(23, 23, 25, .12);
+      --font: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 1.5rem;
+      font-family: var(--font);
+      color: var(--carvao);
+      background: #F4F4F5;
+    }
+
+    .caixa {
+      width: 100%;
+      max-width: 380px;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 2.25rem 1.75rem;
+      box-shadow: 0 24px 48px -32px rgba(0, 0, 0, .35);
+      text-align: center;
+    }
+
+    /* lockup de marcas: Cozinha Campeã × V4 Company */
+    .lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      white-space: nowrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .lockup__cc {
+      height: 42px;
+      width: auto;
+    }
+
+    .lockup__v4 {
+      height: 25px;
+      width: auto;
+    }
+
+    .lockup i {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1;
+      color: var(--cinza-texto);
+      opacity: .55;
+    }
+
+    .eyebrow {
+      margin: 0 0 .4rem;
+      font-size: .625rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--vermelho);
+    }
+
+    h1 {
+      margin: 0 0 1.75rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+    }
+
+    label {
+      display: block;
+      margin-bottom: .5rem;
+      font-size: .6875rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--cinza-texto);
+      text-align: left;
+    }
+
+    input {
+      width: 100%;
+      height: 52px;
+      padding: 0 1rem;
+      font-family: var(--font);
+      font-size: 1rem;
+      color: var(--carvao);
+      background: #FAFAFA;
+      border: 1px solid var(--borda);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    input:focus {
+      border-color: var(--vermelho);
+      background: #fff;
+    }
+
+    button {
+      width: 100%;
+      height: 52px;
+      margin-top: 1rem;
+      font-family: var(--font);
+      font-size: .8125rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--vermelho);
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: filter .2s ease, transform .15s ease;
+    }
+
+    button:hover {
+      filter: brightness(1.08);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .erro {
+      margin: 1rem 0 0;
+      font-size: .8125rem;
+      font-weight: 600;
+      color: var(--vermelho);
+    }
+
+    .rodape {
+      margin: 1.5rem 0 0;
+      font-size: .75rem;
+      color: var(--cinza-texto);
+    }
+  </style>
+</head>
+
+<body>
+  <main class="caixa">
+    <span class="lockup">
+      <img class="lockup__cc" src="/static/img/logos/cozinha-campea.png" alt="Cozinha Campeã" />
+      <i aria-hidden="true">×</i>
+      <img class="lockup__v4" src="/static/img/logos/v4-vermelho.png" alt="V4 Company" />
+    </span>
+    <p class="eyebrow">Painel de resultados</p>
+    <h1>Acesso restrito</h1>
+
+    <form method="post" action="{{ url_for('diagnostico.admin_login') }}">
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" name="senha" autocomplete="current-password" autofocus required
+        placeholder="Digite a senha" />
+      <button type="submit">Entrar</button>
+      {% if erro %}<p class="erro">{{ erro }}</p>{% endif %}
+    </form>
+  </main>
+</body>
+
+</html>
