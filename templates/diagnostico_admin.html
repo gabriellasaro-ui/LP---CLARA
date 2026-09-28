@@ -537,7 +537,6 @@
         </div>
         <div class="acoes">
           <a href="/diagnostico/admin/export.csv">Baixar CSV</a>
-          <button id="btnLimpar" title="Apaga todas as respostas">Zerar</button>
         </div>
       </div>
     </header>
@@ -835,11 +834,6 @@
         .then(function (d) { if (d) { pintar(d); } })
         .catch(function () { /* mantem a ultima leitura na tela */ });
     }
-
-    document.getElementById('btnLimpar').onclick = function () {
-      if (!confirm('Apagar TODAS as respostas? Isso não tem volta.')) { return; }
-      fetch('/diagnostico/admin/limpar', { method: 'POST' }).then(carregar);
-    };
 
     carregar();
     setInterval(carregar, 10000);

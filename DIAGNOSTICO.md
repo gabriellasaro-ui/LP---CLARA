@@ -102,11 +102,26 @@ Se o banco estiver fora do ar, a LP continua servindo normalmente — só o diag
 
 ## No dia do evento
 
-- **Antes de abrir para a sala**, entre no painel e clique em **Zerar** para descartar
-  qualquer resposta de teste.
-- **Baixar CSV** exporta todas as respostas com nome, empresa e notas por frente
-  (separador `;`, abre direto no Excel).
+- **Baixar CSV** exporta todas as respostas com contato, aceite de LGPD, scores por
+  pilar, nível e trilha sugerida (separador `;`, abre direto no Excel).
 - O painel é feito para projeção: abra em tela cheia e deixe rodando.
+
+### Descartar as respostas de teste
+
+O painel **não tem botão de apagar** — num telão ao vivo, um clique errado custaria
+todas as respostas da sala. A rota existe, mas só responde a um POST deliberado,
+já autenticado como admin:
+
+```bash
+curl -X POST https://SEU-DOMINIO/diagnostico/admin/limpar \
+  -H "Cookie: session=<cookie de uma sessão de admin>"
+```
+
+Na prática, o mais simples é limpar direto no banco antes do evento:
+
+```sql
+TRUNCATE dashboard_tvsim.diagnostico_cozinha RESTART IDENTITY;
+```
 
 ## Rodando local
 
