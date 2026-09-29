@@ -70,16 +70,27 @@ R$ 1 milhão vai direto para Enterprise.
 
 ## Página de planos (`/planos`)
 
-Uma seção só: os 4 planos (Basic, Intermediário, Avançado e Enterprise) como cartões
-selecionáveis, escassez de **10 vagas** com contador de vagas restantes, e um formulário
-com nome, restaurante, e-mail e telefone.
+Uma seção só, em duas etapas: **1 · Seus dados** (nome, restaurante, e-mail e telefone)
+e **2 · Escolha o plano** (Basic, Intermediário, Avançado e Enterprise como cartões
+selecionáveis). Fecha com o botão **Registrar interesse** e uma tela de agradecimento.
+
+A **escassez é mensagem, não trava**: o texto de `ESCASSEZ` aparece na página, mas nada
+é contado nem bloqueado. Ninguém fica de fora por causa de um contador, e a página nunca
+revela quantas pessoas já se inscreveram — o que seria o oposto de escassez com poucos
+cadastros.
 
 Grava em tabela própria — `dashboard_tvsim.interesse_planos` — separada do diagnóstico.
-Preços e itens de cada plano ficam em `OFERTA`, no `planos.py`; o total de vagas em
-`VAGAS_TOTAL`.
+Preços, valores e itens de cada plano ficam em `OFERTA`, no `planos.py`.
 
-No painel de admin há uma aba **Interessados** com a lista (nome, restaurante, plano,
-e-mail e telefone clicáveis), quantos escolheram cada plano, vagas restantes e export CSV.
+No painel de admin há uma aba **Interessados** com:
+
+- quantos registraram interesse e o **potencial mensal na mesa** (soma dos planos
+  escolhidos; Enterprise fica fora da conta por ser sob medida);
+- filtro por plano;
+- lista com nome, restaurante, plano e valor, e-mail e telefone clicáveis, selo **novo**
+  para quem chegou na última hora e **botão de WhatsApp** por pessoa;
+- export CSV.
+
 Ela usa a mesma sessão de admin do diagnóstico.
 
 ## Onde os dados ficam

@@ -16,7 +16,9 @@ from flask import Blueprint, Response, jsonify, render_template, request, sessio
 
 bp = Blueprint("planos", __name__, url_prefix="/planos")
 
-VAGAS_TOTAL = 10
+# Escassez é mensagem de página, não trava: ninguém fica de fora por causa de
+# um contador, e a página nunca anuncia quantas pessoas já se inscreveram.
+ESCASSEZ = "Somente 10 vagas para este ciclo"
 
 OFERTA = [
     {
@@ -24,6 +26,7 @@ OFERTA = [
         "etiqueta": "Para começar",
         "nome": "Basic",
         "preco": "R$ 4.795",
+        "valor": 4795,
         "periodo": "/mês · 6 meses",
         "destaque": False,
         "itens": [
@@ -37,6 +40,7 @@ OFERTA = [
         "etiqueta": "Recomendado",
         "nome": "Intermediário",
         "preco": "R$ 6.195",
+        "valor": 6195,
         "periodo": "/mês · 6 meses",
         "destaque": True,
         "itens": [
@@ -51,6 +55,7 @@ OFERTA = [
         "etiqueta": "Para crescer",
         "nome": "Avançado",
         "preco": "R$ 7.595",
+        "valor": 7595,
         "periodo": "/mês · 6 meses",
         "destaque": False,
         "itens": [
@@ -65,6 +70,7 @@ OFERTA = [
         "etiqueta": "Personalizado",
         "nome": "Enterprise",
         "preco": "Sob medida",
+        "valor": None,
         "periodo": "proposta personalizada",
         "destaque": False,
         "itens": [
@@ -80,6 +86,7 @@ INCLUSO = ("Em todos os planos: gestão de tráfego pago, estratégia de marketi
            "experiência no festival e gravações em collab com o Cozinha Campeã.")
 
 NOMES_PLANO = {p["id"]: p["nome"] for p in OFERTA}
+VALOR_PLANO = {p["nome"]: p["valor"] for p in OFERTA}
 
 # --------------------------------------------------------------------------- #
 # Banco
@@ -122,28 +129,17 @@ def init_db():
         cur.execute(SCHEMA)
 
 
-def _contar():
-    with conectar() as conn, conn.cursor() as cur:
-        cur.execute(f"SELECT count(*) FROM {TABELA}")
-        return cur.fetchone()[0]
-
-
 # --------------------------------------------------------------------------- #
 # Rotas públicas
 # --------------------------------------------------------------------------- #
 
 @bp.route("/", methods=["GET"], strict_slashes=False)
 def pagina():
-    try:
-        preenchidas = _contar()
-    except Exception:
-        preenchidas = 0
     return render_template(
         "planos.html",
         oferta=OFERTA,
         incluso=INCLUSO,
-        vagas_total=VAGAS_TOTAL,
-        vagas_restantes=max(0, VAGAS_TOTAL - preenchidas),
+        escassez=ESCASSEZ,
         ja_enviou=bool(session.get("planos_enviado")),
     )
 
@@ -174,11 +170,7 @@ def interesse():
         )
 
     session["planos_enviado"] = True
-    try:
-        restantes = max(0, VAGAS_TOTAL - _contar())
-    except Exception:
-        restantes = None
-    return jsonify({"ok": True, "plano": NOMES_PLANO[plano], "restantes": restantes})
+    return jsonify({"ok": True, "plano": NOMES_PLANO[plano]})
 
 
 # --------------------------------------------------------------------------- #
@@ -201,26 +193,37 @@ def lista():
     por_plano = []
     for p in OFERTA:
         n = sum(1 for l in linhas if l["plano"] == p["nome"])
-        por_plano.append({"nome": p["nome"], "n": n})
+        por_plano.append({"nome": p["nome"], "n": n, "valor": p["valor"]})
 
+    # potencial mensal: Enterprise nao entra na conta (proposta sob medida)
+    potencial = sum(
+        VALOR_PLANO.get(l["plano"]) or 0 for l in linhas
+    )
+    sob_medida = sum(1 for l in linhas if not VALOR_PLANO.get(l["plano"]))
+
+    agora = datetime.now(timezone.utc)
     return jsonify({
         "total": len(linhas),
-        "vagas_total": VAGAS_TOTAL,
-        "vagas_restantes": max(0, VAGAS_TOTAL - len(linhas)),
         "por_plano": por_plano,
+        "potencial_mes": potencial,
+        "sob_medida": sob_medida,
         "pessoas": [
             {
                 "id": l["id"],
                 "quando": l["criado_em"].strftime("%d/%m %H:%M"),
+                # marca quem chegou na última hora, para o time atacar primeiro
+                "novo": (agora - l["criado_em"]).total_seconds() < 3600,
                 "nome": l["nome"],
                 "email": l["email"],
                 "telefone": l["telefone"],
+                "whatsapp": re.sub(r"\D", "", l["telefone"] or ""),
                 "plano": l["plano"],
+                "valor": VALOR_PLANO.get(l["plano"]),
                 "restaurante": l["restaurante"] or "",
             }
             for l in linhas
         ],
-        "atualizado_em": datetime.now(timezone.utc).isoformat(),
+        "atualizado_em": agora.isoformat(),
     })
 
 

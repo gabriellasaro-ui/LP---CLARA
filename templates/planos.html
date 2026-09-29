@@ -83,6 +83,20 @@
       font-weight: 700;
       line-height: 1.05;
       letter-spacing: -.03em;
+      max-width: 20ch;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--vermelho);
+    }
+
+    .lead {
+      margin: .9rem 0 0;
+      max-width: 60ch;
+      font-size: clamp(.9375rem, .9rem + .25vw, 1.0625rem);
+      line-height: 1.6;
+      color: var(--cinza-texto);
     }
 
     /* ---------- escassez ---------- */
@@ -488,17 +502,13 @@
     </span>
 
     <div id="conteudo">
-      <p class="eyebrow">O investimento</p>
-      <h1>Escolha o plano do seu restaurante.</h1>
-      <p class="vagas" id="vagas">
+      <p class="eyebrow">O próximo passo</p>
+      <h1>Quer ser o próximo <em>Restaurante Campeão</em>?</h1>
+      <p class="lead">Registre seu interesse e escolha o plano que faz sentido para o seu
+        negócio. Nosso time entra em contato para montar o plano de crescimento com você.</p>
+      <p class="vagas">
         <span class="vagas__ponto" aria-hidden="true"></span>
-        <span id="vagasTexto">
-          {%- if vagas_restantes > 0 -%}
-          Somente {{ vagas_total }} vagas · restam {{ vagas_restantes }}
-          {%- else -%}
-          As {{ vagas_total }} vagas foram preenchidas · entre na lista de espera
-          {%- endif -%}
-        </span>
+        <span>{{ escassez }}</span>
       </p>
 
       <section class="form">

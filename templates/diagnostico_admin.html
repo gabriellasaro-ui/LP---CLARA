@@ -275,6 +275,118 @@
       color: var(--vermelho);
     }
 
+    .lista tbody tr:hover {
+      background: #FAFAFB;
+    }
+
+    .quem b {
+      display: block;
+      font-size: .9375rem;
+      color: var(--carvao);
+    }
+
+    .quem span {
+      font-size: .8125rem;
+      color: var(--cinza-texto);
+    }
+
+    .contato {
+      display: flex;
+      flex-direction: column;
+      gap: .15rem;
+      font-size: .8125rem;
+    }
+
+    .valor-mes {
+      display: block;
+      margin-top: .2rem;
+      font-size: .6875rem;
+      color: var(--cinza-claro);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .selo-novo {
+      display: inline-block;
+      margin-left: .4rem;
+      padding: .1rem .4rem;
+      border-radius: 99px;
+      background: var(--verde);
+      color: #fff;
+      font-size: .5625rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      vertical-align: 1px;
+    }
+
+    .col-acao {
+      width: 1%;
+    }
+
+    .zap {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .45rem .75rem;
+      border-radius: 8px;
+      background: var(--verde);
+      color: #fff !important;
+      font-size: .75rem;
+      font-weight: 700;
+      white-space: nowrap;
+      text-decoration: none;
+      transition: filter .2s ease;
+    }
+
+    .zap:hover {
+      filter: brightness(1.1);
+      color: #fff !important;
+    }
+
+    .zap svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* filtros por plano */
+    .filtros {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      margin-bottom: 1rem;
+    }
+
+    .filtro {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .4rem .8rem;
+      font-family: var(--font);
+      font-size: .75rem;
+      font-weight: 600;
+      color: var(--cinza-texto);
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 99px;
+      cursor: pointer;
+      transition: border-color .18s ease, color .18s ease, background .18s ease;
+    }
+
+    .filtro:hover {
+      border-color: var(--vermelho);
+    }
+
+    .filtro.is-on {
+      background: var(--carvao);
+      border-color: var(--carvao);
+      color: #fff;
+    }
+
+    .filtro b {
+      font-variant-numeric: tabular-nums;
+      opacity: .7;
+    }
+
     /* ---------- kpis ---------- */
     .kpis {
       display: grid;
@@ -756,16 +868,17 @@
             <a href="/planos/admin/export.csv">Baixar CSV</a>
           </div>
         </div>
+        <div class="filtros" id="filtrosPlano"></div>
+
         <div class="tabela-rolagem">
           <table class="lista">
             <thead>
               <tr>
                 <th>Quando</th>
-                <th>Nome</th>
-                <th>Restaurante</th>
+                <th>Quem</th>
                 <th>Plano</th>
-                <th>E-mail</th>
-                <th>Telefone</th>
+                <th>Contato</th>
+                <th class="col-acao"></th>
               </tr>
             </thead>
             <tbody id="listaInteresse"></tbody>
@@ -983,35 +1096,87 @@
     }
 
     /* ---------------------- aba de interessados ---------------------- */
+    var filtroPlano = null;      /* null = todos */
+    var ultimaLista = null;      /* guarda o dado para refiltrar sem nova requisição */
+
+    function moeda(v) {
+      return 'R$ ' + Number(v).toLocaleString('pt-BR');
+    }
+
+    function linhaPessoa(p) {
+      var zap = p.whatsapp
+        ? '<a class="zap" href="https://wa.me/55' + esc(p.whatsapp) + '" target="_blank" rel="noopener">' +
+          '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+          '<path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.2 1.3-1.9 1.4-.5.1-1.1.2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 .9-2.2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2 1.3 2.3 1.4.3.1.4.1.6-.1l.9-1c.2-.2.4-.2.6-.1l2 .9c.2.1.4.2.5.3.1.2.1.8-.1 1.5Z"/>' +
+          '</svg>WhatsApp</a>'
+        : '';
+      return '<tr>' +
+        '<td>' + esc(p.quando) + (p.novo ? '<span class="selo-novo">novo</span>' : '') + '</td>' +
+        '<td class="quem"><b>' + esc(p.nome) + '</b><span>' + esc(p.restaurante || '—') + '</span></td>' +
+        '<td><span class="plano-tag">' + esc(p.plano) + '</span>' +
+        (p.valor ? '<span class="valor-mes">' + moeda(p.valor) + '/mês</span>'
+                 : '<span class="valor-mes">sob medida</span>') + '</td>' +
+        '<td><span class="contato">' +
+        '<a href="mailto:' + esc(p.email) + '">' + esc(p.email) + '</a>' +
+        '<a href="tel:+55' + esc(p.whatsapp) + '">' + esc(p.telefone) + '</a>' +
+        '</span></td>' +
+        '<td class="col-acao">' + zap + '</td>' +
+        '</tr>';
+    }
+
+    function desenharLista() {
+      var d = ultimaLista;
+      if (!d) { return; }
+      var pessoas = filtroPlano
+        ? d.pessoas.filter(function (p) { return p.plano === filtroPlano; })
+        : d.pessoas;
+
+      document.getElementById('listaInteresse').innerHTML = pessoas.length
+        ? pessoas.map(linhaPessoa).join('')
+        : '<tr><td colspan="5" class="vazio">' +
+          (d.total ? 'Ninguém escolheu esse plano ainda.'
+                   : 'Ninguém preencheu a página de planos ainda.') + '</td></tr>';
+
+      /* chips de filtro */
+      var chips = [{ nome: null, rotulo: 'Todos', n: d.total }].concat(
+        d.por_plano.map(function (p) { return { nome: p.nome, rotulo: p.nome, n: p.n }; }));
+      document.getElementById('filtrosPlano').innerHTML = chips.map(function (c) {
+        var ativo = (c.nome === filtroPlano);
+        return '<button class="filtro' + (ativo ? ' is-on' : '') + '" data-plano="' +
+          esc(c.nome === null ? '' : c.nome) + '">' + esc(c.rotulo) + ' <b>' + c.n + '</b></button>';
+      }).join('');
+      document.querySelectorAll('#filtrosPlano .filtro').forEach(function (b) {
+        b.onclick = function () {
+          var v = b.getAttribute('data-plano');
+          filtroPlano = v === '' ? null : v;
+          desenharLista();
+        };
+      });
+    }
+
     function pintarInteresse(d) {
+      ultimaLista = d;
       document.getElementById('abaContador').textContent = d.total;
 
+      var potencial = d.potencial_mes
+        ? moeda(d.potencial_mes) + '<span style="font-size:.45em;color:var(--cinza-claro)">/mês</span>'
+        : '—';
       document.getElementById('kpisInteresse').innerHTML =
         '<div class="card kpi"><span>Interessados</span><b>' + d.total + '</b></div>' +
-        '<div class="card kpi"><span>Vagas restantes</span><b>' + d.vagas_restantes +
-        ' <span style="font-size:.5em;color:var(--cinza-claro)">de ' + d.vagas_total +
-        '</span></b></div>' +
+        '<div class="card kpi"><span>Potencial na mesa</span><b>' + potencial + '</b></div>' +
         d.por_plano.map(function (p) {
           return '<div class="card kpi"><span>' + esc(p.nome) + '</span><b>' + p.n + '</b></div>';
         }).join('');
 
-      document.getElementById('interesseResumo').textContent = d.total
-        ? d.total + (d.total === 1 ? ' pessoa pediu contato.' : ' pessoas pediram contato.')
-        : 'Ninguém preencheu ainda.';
+      var resumo = d.total
+        ? d.total + (d.total === 1 ? ' pessoa registrou interesse' : ' pessoas registraram interesse')
+        : 'Ninguém registrou interesse ainda.';
+      if (d.sob_medida) {
+        resumo += ' · ' + d.sob_medida + ' no Enterprise, fora da conta do potencial';
+      }
+      document.getElementById('interesseResumo').textContent = resumo;
 
-      document.getElementById('listaInteresse').innerHTML = d.total
-        ? d.pessoas.map(function (p) {
-          return '<tr>' +
-            '<td>' + esc(p.quando) + '</td>' +
-            '<td><b>' + esc(p.nome) + '</b></td>' +
-            '<td>' + esc(p.restaurante || '—') + '</td>' +
-            '<td><span class="plano-tag">' + esc(p.plano) + '</span></td>' +
-            '<td><a href="mailto:' + esc(p.email) + '">' + esc(p.email) + '</a></td>' +
-            '<td><a href="tel:' + esc(p.telefone.replace(/\D/g, '')) + '">' +
-            esc(p.telefone) + '</a></td>' +
-            '</tr>';
-        }).join('')
-        : '<tr><td colspan="6" class="vazio">Ninguém preencheu a página de planos ainda.</td></tr>';
+      desenharLista();
     }
 
     function carregarInteresse() {
