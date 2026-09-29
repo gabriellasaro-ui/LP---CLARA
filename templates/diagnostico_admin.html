@@ -51,6 +51,19 @@
       padding: 1.5rem;
     }
 
+    /* respiro entre as faixas empilhadas — inclusive dentro das abas, que são
+       divs simples e por isso não herdavam o gap do .grade */
+    .grade > *,
+    #painelDiagnostico > *,
+    #painelInteresse > * {
+      margin-bottom: 20px;
+    }
+
+    #painelDiagnostico > *:last-child,
+    #painelInteresse > *:last-child {
+      margin-bottom: 0;
+    }
+
     /* lockup de marcas: Cozinha Campeã × V4 Company */
     .lockup {
       display: inline-flex;
