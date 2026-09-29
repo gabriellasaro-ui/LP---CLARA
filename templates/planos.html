@@ -329,17 +329,29 @@
       padding: 1.75rem 1.5rem;
     }
 
-    .form h2 {
-      margin: 0 0 .3rem;
-      font-size: 1.25rem;
+    .passo-num {
+      margin: 0 0 1.1rem;
+      font-size: .6875rem;
       font-weight: 700;
-      letter-spacing: -.02em;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--cinza-claro);
     }
 
-    .form__sub {
-      margin: 0 0 1.35rem;
-      font-size: .875rem;
-      color: var(--cinza-texto);
+    .passo-num--solto {
+      margin: 1.75rem 0 .85rem;
+    }
+
+    .fechamento {
+      margin-top: 1.5rem;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 1.35rem 1.5rem 1.5rem;
+    }
+
+    .fechamento .btn {
+      margin-top: 0;
     }
 
     .grade {
@@ -489,6 +501,30 @@
         </span>
       </p>
 
+      <section class="form">
+        <p class="passo-num">1 · Seus dados</p>
+        <div class="grade">
+          <div class="campo">
+            <label for="nome">Nome completo</label>
+            <input id="nome" type="text" autocomplete="name" placeholder="Nome e sobrenome" />
+          </div>
+          <div class="campo">
+            <label for="restaurante">Restaurante</label>
+            <input id="restaurante" type="text" autocomplete="organization" placeholder="Nome do seu negócio" />
+          </div>
+          <div class="campo">
+            <label for="email">E-mail</label>
+            <input id="email" type="email" autocomplete="email" placeholder="voce@email.com" />
+          </div>
+          <div class="campo">
+            <label for="telefone">Telefone</label>
+            <input id="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" />
+          </div>
+        </div>
+      </section>
+
+      <p class="passo-num passo-num--solto">2 · Escolha o plano</p>
+
       <div class="planos">
         {% for p in oferta %}
         <button type="button" class="plano{% if p.destaque %} plano--destaque{% endif %}" data-plano="{{ p.id }}">
@@ -516,33 +552,11 @@
 
       <p class="incluso">{{ incluso }}</p>
 
-      <section class="form">
-        <h2>Quero garantir minha vaga</h2>
-        <p class="form__sub">Escolha um plano acima e deixe seus dados. Nosso time entra em contato.</p>
-
-        <div class="grade">
-          <div class="campo">
-            <label for="nome">Nome completo</label>
-            <input id="nome" type="text" autocomplete="name" placeholder="Nome e sobrenome" />
-          </div>
-          <div class="campo">
-            <label for="restaurante">Restaurante</label>
-            <input id="restaurante" type="text" autocomplete="organization" placeholder="Nome do seu negócio" />
-          </div>
-          <div class="campo">
-            <label for="email">E-mail</label>
-            <input id="email" type="email" autocomplete="email" placeholder="voce@email.com" />
-          </div>
-          <div class="campo">
-            <label for="telefone">Telefone</label>
-            <input id="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" />
-          </div>
-        </div>
-
-        <button class="btn" id="btnEnviar">Quero falar com o time</button>
+      <div class="fechamento">
+        <button class="btn" id="btnEnviar">Registrar interesse</button>
         <p class="erro" id="erro" hidden></p>
-        <p class="nota">Ao enviar, você autoriza o contato da Cozinha Campeã e da V4 Company sobre os planos.</p>
-      </section>
+        <p class="nota">Ao registrar, você autoriza o contato da Cozinha Campeã e da V4 Company sobre os planos.</p>
+      </div>
     </div>
 
     <div class="sucesso" id="sucesso" hidden>
@@ -551,7 +565,7 @@
         <circle cx="12" cy="12" r="10" />
         <path d="m8 12 3 3 5-6" />
       </svg>
-      <h2>Vaga reservada!</h2>
+      <h2>Obrigado!</h2>
       <p id="sucessoTexto">Recebemos seus dados. Nosso time entra em contato em breve.</p>
     </div>
   </main>
@@ -608,12 +622,13 @@
         plano: planoEscolhido
       };
 
-      if (!dados.plano) { return mostrarErro('Escolha um dos planos acima.'); }
+      /* na ordem da tela: primeiro os dados, depois o plano */
       if (dados.nome.length < 2) { return mostrarErro('Informe seu nome.'); }
       if (dados.email.indexOf('@') < 1) { return mostrarErro('Informe um e-mail válido.'); }
       if (dados.telefone.replace(/\D/g, '').length < 10) {
         return mostrarErro('Informe um telefone com DDD.');
       }
+      if (!dados.plano) { return mostrarErro('Escolha um dos planos acima.'); }
 
       botao.disabled = true;
       botao.textContent = 'Enviando…';
@@ -628,7 +643,7 @@
         .then(function (r) {
           if (!r.ok) { throw new Error(r.j.erro || 'Não foi possível enviar.'); }
           document.getElementById('sucessoTexto').textContent =
-            'Recebemos seus dados e o interesse no plano ' + r.j.plano +
+            'Interesse registrado no plano ' + r.j.plano +
             '. Nosso time entra em contato em breve.';
           conteudo.hidden = true;
           sucesso.hidden = false;
@@ -636,7 +651,7 @@
         })
         .catch(function (e) {
           botao.disabled = false;
-          botao.textContent = 'Quero falar com o time';
+          botao.textContent = 'Registrar interesse';
           mostrarErro(e.message);
         });
     };
