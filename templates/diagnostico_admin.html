@@ -172,6 +172,109 @@
       color: var(--vermelho);
     }
 
+    /* ---------- abas ---------- */
+    .abas {
+      display: flex;
+      gap: .4rem;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      padding: .35rem;
+    }
+
+    .aba {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      flex: 1;
+      justify-content: center;
+      padding: .7rem 1rem;
+      font-family: var(--font);
+      font-size: .8125rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--cinza-texto);
+      background: none;
+      border: 0;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: background .18s ease, color .18s ease;
+    }
+
+    .aba:hover {
+      color: var(--carvao);
+    }
+
+    .aba.is-on {
+      background: var(--carvao);
+      color: #fff;
+    }
+
+    .aba__contador {
+      min-width: 22px;
+      padding: .1rem .35rem;
+      border-radius: 99px;
+      background: var(--vermelho);
+      color: #fff;
+      font-size: .6875rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ---------- lista de interessados ---------- */
+    .kpis--interesse {
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    }
+
+    .interesse__topo {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .interesse__topo .acoes {
+      margin-top: 0;
+    }
+
+    .tabela-rolagem {
+      overflow-x: auto;
+    }
+
+    .lista {
+      min-width: 720px;
+    }
+
+    .lista tbody td {
+      text-align: left;
+    }
+
+    .lista thead th {
+      text-align: left;
+    }
+
+    .lista .plano-tag {
+      display: inline-block;
+      padding: .2rem .55rem;
+      border-radius: 99px;
+      background: rgba(227, 6, 19, .09);
+      color: var(--vermelho);
+      font-size: .75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .lista a {
+      color: var(--cinza-texto);
+      text-decoration: none;
+    }
+
+    .lista a:hover {
+      color: var(--vermelho);
+    }
+
     /* ---------- kpis ---------- */
     .kpis {
       display: grid;
@@ -530,7 +633,7 @@
         <p class="eyebrow">Diagnóstico comercial · Painel ao vivo</p>
         <h1>Maturidade do Negócio</h1>
       </div>
-      <div>
+      <div id="cabecalhoDiagnostico">
         <div class="respondentes">
           <span>Respondentes</span>
           <b id="total">0</b>
@@ -540,6 +643,15 @@
         </div>
       </div>
     </header>
+
+    <nav class="abas" role="tablist">
+      <button class="aba is-on" id="abaDiagnostico" role="tab" aria-selected="true">Diagnóstico</button>
+      <button class="aba" id="abaInteresse" role="tab" aria-selected="false">
+        Interessados <span class="aba__contador" id="abaContador">0</span>
+      </button>
+    </nav>
+
+    <div id="painelDiagnostico">
 
     <section class="kpis" id="kpis"></section>
 
@@ -626,6 +738,41 @@
         <div class="barras" id="tempo"></div>
       </div>
     </section>
+
+    </div><!-- /painelDiagnostico -->
+
+    <div id="painelInteresse" hidden>
+      <section class="kpis kpis--interesse" id="kpisInteresse"></section>
+
+      <section class="card">
+        <div class="interesse__topo">
+          <div>
+            <p class="eyebrow">Quem quer fechar</p>
+            <h2>Interesse nos planos</h2>
+            <p class="sub" id="interesseResumo"></p>
+          </div>
+          <div class="acoes">
+            <a href="/planos" target="_blank" rel="noopener">Abrir página</a>
+            <a href="/planos/admin/export.csv">Baixar CSV</a>
+          </div>
+        </div>
+        <div class="tabela-rolagem">
+          <table class="lista">
+            <thead>
+              <tr>
+                <th>Quando</th>
+                <th>Nome</th>
+                <th>Restaurante</th>
+                <th>Plano</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+              </tr>
+            </thead>
+            <tbody id="listaInteresse"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
 
     <p class="rodape">Atualização automática a cada 10 segundos.</p>
   </div>
@@ -835,8 +982,73 @@
         .catch(function () { /* mantem a ultima leitura na tela */ });
     }
 
-    carregar();
-    setInterval(carregar, 10000);
+    /* ---------------------- aba de interessados ---------------------- */
+    function pintarInteresse(d) {
+      document.getElementById('abaContador').textContent = d.total;
+
+      document.getElementById('kpisInteresse').innerHTML =
+        '<div class="card kpi"><span>Interessados</span><b>' + d.total + '</b></div>' +
+        '<div class="card kpi"><span>Vagas restantes</span><b>' + d.vagas_restantes +
+        ' <span style="font-size:.5em;color:var(--cinza-claro)">de ' + d.vagas_total +
+        '</span></b></div>' +
+        d.por_plano.map(function (p) {
+          return '<div class="card kpi"><span>' + esc(p.nome) + '</span><b>' + p.n + '</b></div>';
+        }).join('');
+
+      document.getElementById('interesseResumo').textContent = d.total
+        ? d.total + (d.total === 1 ? ' pessoa pediu contato.' : ' pessoas pediram contato.')
+        : 'Ninguém preencheu ainda.';
+
+      document.getElementById('listaInteresse').innerHTML = d.total
+        ? d.pessoas.map(function (p) {
+          return '<tr>' +
+            '<td>' + esc(p.quando) + '</td>' +
+            '<td><b>' + esc(p.nome) + '</b></td>' +
+            '<td>' + esc(p.restaurante || '—') + '</td>' +
+            '<td><span class="plano-tag">' + esc(p.plano) + '</span></td>' +
+            '<td><a href="mailto:' + esc(p.email) + '">' + esc(p.email) + '</a></td>' +
+            '<td><a href="tel:' + esc(p.telefone.replace(/\D/g, '')) + '">' +
+            esc(p.telefone) + '</a></td>' +
+            '</tr>';
+        }).join('')
+        : '<tr><td colspan="6" class="vazio">Ninguém preencheu a página de planos ainda.</td></tr>';
+    }
+
+    function carregarInteresse() {
+      fetch('/planos/api/lista', { cache: 'no-store' })
+        .then(function (r) {
+          if (r.status === 403) { location.reload(); return null; }
+          return r.json();
+        })
+        .then(function (d) { if (d) { pintarInteresse(d); } })
+        .catch(function () { /* mantem a ultima leitura na tela */ });
+    }
+
+    /* troca de aba */
+    var abas = [
+      { botao: document.getElementById('abaDiagnostico'), painel: document.getElementById('painelDiagnostico') },
+      { botao: document.getElementById('abaInteresse'), painel: document.getElementById('painelInteresse') }
+    ];
+    abas.forEach(function (alvo, indice) {
+      alvo.botao.onclick = function () {
+        abas.forEach(function (o) {
+          var ativo = o === alvo;
+          o.botao.classList.toggle('is-on', ativo);
+          o.botao.setAttribute('aria-selected', ativo ? 'true' : 'false');
+          o.painel.hidden = !ativo;
+        });
+        /* o contador e o CSV do cabeçalho são do diagnóstico: fora na outra aba */
+        document.getElementById('cabecalhoDiagnostico').hidden = indice !== 0;
+      };
+    });
+
+    function atualizarTudo() {
+      carregar();
+      carregarInteresse();
+    }
+
+    atualizarTudo();
+    setInterval(atualizarTudo, 10000);
   </script>
 </body>
 

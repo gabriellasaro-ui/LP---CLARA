@@ -8,6 +8,7 @@ Formulário do evento + painel ao vivo. Roda dentro da mesma app Flask da LP.
 |---|---|---|
 | Formulário (participantes) | `/diagnostico` | **aberto**, sem senha |
 | Painel de resultados | `/diagnostico/admin` | definida em `SENHA_ADMIN` |
+| Captura de planos | `/planos` | **aberta**, sem senha |
 
 O formulário é aberto: quem tem o link responde. A senha do painel vem só da variável
 de ambiente `SENHA_ADMIN` — **este repositório é público, então nenhuma senha real
@@ -66,6 +67,20 @@ R$ 1 milhão vai direto para Enterprise.
 
 > O critério "mais de uma unidade" do artefato não é perguntado no formulário, então a
 > regra do Enterprise usa só o faturamento.
+
+## Página de planos (`/planos`)
+
+Uma seção só: os 4 planos (Basic, Intermediário, Avançado e Enterprise) como cartões
+selecionáveis, escassez de **10 vagas** com contador de vagas restantes, e um formulário
+com nome, restaurante, e-mail e telefone.
+
+Grava em tabela própria — `dashboard_tvsim.interesse_planos` — separada do diagnóstico.
+Preços e itens de cada plano ficam em `OFERTA`, no `planos.py`; o total de vagas em
+`VAGAS_TOTAL`.
+
+No painel de admin há uma aba **Interessados** com a lista (nome, restaurante, plano,
+e-mail e telefone clicáveis), quantos escolheram cada plano, vagas restantes e export CSV.
+Ela usa a mesma sessão de admin do diagnóstico.
 
 ## Onde os dados ficam
 

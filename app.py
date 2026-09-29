@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 import diagnostico
+import planos
 
 app = Flask(__name__)
 
@@ -27,17 +28,19 @@ app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.jinja_env.auto_reload = True
 
 app.register_blueprint(diagnostico.bp)
+app.register_blueprint(planos.bp)
 
 # Roda na importacao para valer tambem sob gunicorn (o bloco __main__ nao executa la).
 # Se o banco estiver fora do ar, a LP continua servindo normalmente.
-try:
-    diagnostico.init_db()
-    print("[diagnostico] tabela verificada/criada com sucesso")
-except Exception as e:
-    print(f"[diagnostico] AVISO: nao foi possivel preparar o banco: {e}")
+for _modulo, _rotulo in ((diagnostico, "diagnostico"), (planos, "planos")):
+    try:
+        _modulo.init_db()
+        print(f"[{_rotulo}] tabela verificada/criada com sucesso")
+    except Exception as e:
+        print(f"[{_rotulo}] AVISO: nao foi possivel preparar o banco: {e}")
 
 # Slugs reservados: nao podem cair na rota curinga das landing pages
-SLUGS_RESERVADOS = {"diagnostico", "static"}
+SLUGS_RESERVADOS = {"diagnostico", "planos", "static"}
 
 
 @app.route("/")

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Escolha o plano do seu restaurante · Cozinha Campeã × V4</title>
+  <link rel="icon" href="/static/img/favicon.ico" sizes="any" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --vermelho: #E30613;
+      --ambar: #FF9418;
+      --carvao: #171719;
+      --cinza-texto: #625E58;
+      --cinza-claro: #9A968F;
+      --borda: rgba(23, 23, 25, .12);
+      --creme: #F7F4EE;
+      --font: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100svh;
+      font-family: var(--font);
+      color: var(--carvao);
+      background: var(--creme);
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 3rem;
+    }
+
+    /* ---------- topo ---------- */
+    .lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      white-space: nowrap;
+      margin-bottom: 1.75rem;
+    }
+
+    .lockup__cc {
+      height: 40px;
+      width: auto;
+    }
+
+    .lockup__v4 {
+      height: 24px;
+      width: auto;
+    }
+
+    .lockup i {
+      font-style: normal;
+      font-size: .9375rem;
+      line-height: 1;
+      color: var(--cinza-texto);
+      opacity: .55;
+    }
+
+    .eyebrow {
+      margin: 0 0 .4rem;
+      font-size: .6875rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--vermelho);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.75rem, 1.3rem + 2.2vw, 3rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -.03em;
+    }
+
+    /* ---------- escassez ---------- */
+    .vagas {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      margin-top: 1.1rem;
+      padding: .5rem .9rem;
+      border-radius: 99px;
+      background: rgba(227, 6, 19, .08);
+      border: 1px solid rgba(227, 6, 19, .25);
+      font-size: .8125rem;
+      font-weight: 600;
+      color: var(--vermelho);
+    }
+
+    .vagas__ponto {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--vermelho);
+      flex-shrink: 0;
+      animation: pulso 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulso {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .35;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .vagas__ponto {
+        animation: none;
+      }
+    }
+
+    /* ---------- planos ---------- */
+    .planos {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin: 1.75rem 0 0;
+    }
+
+    .plano {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      padding: 1.35rem 1.25rem;
+      background: #fff;
+      border: 1.5px solid var(--borda);
+      border-radius: 14px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: border-color .18s ease, transform .12s ease, box-shadow .18s ease;
+    }
+
+    .plano:hover {
+      border-color: rgba(227, 6, 19, .45);
+    }
+
+    .plano:active {
+      transform: scale(.995);
+    }
+
+    .plano.is-on {
+      border-color: var(--vermelho);
+      box-shadow: 0 0 0 3px rgba(227, 6, 19, .12);
+    }
+
+    .plano--destaque {
+      background: var(--carvao);
+      border-color: var(--carvao);
+      color: #fff;
+    }
+
+    .plano--destaque.is-on {
+      border-color: var(--ambar);
+      box-shadow: 0 0 0 3px rgba(255, 148, 24, .25);
+    }
+
+    .plano__etiqueta {
+      margin: 0 0 .3rem;
+      font-size: .625rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--vermelho);
+    }
+
+    .plano--destaque .plano__etiqueta {
+      color: var(--ambar);
+    }
+
+    .plano__nome {
+      margin: 0;
+      font-size: 1.1875rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .plano__preco {
+      margin: .15rem 0 0;
+      font-size: 1.625rem;
+      font-weight: 700;
+      letter-spacing: -.035em;
+      color: var(--vermelho);
+      line-height: 1.1;
+    }
+
+    .plano--destaque .plano__preco {
+      color: var(--ambar);
+    }
+
+    .plano__periodo {
+      margin: .1rem 0 .9rem;
+      font-size: .8125rem;
+      color: var(--cinza-texto);
+    }
+
+    .plano--destaque .plano__periodo {
+      color: rgba(255, 255, 255, .6);
+    }
+
+    .plano__itens {
+      list-style: none;
+      margin: 0;
+      padding: .85rem 0 0;
+      border-top: 1px solid var(--borda);
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      flex: 1;
+    }
+
+    .plano--destaque .plano__itens {
+      border-top-color: rgba(255, 255, 255, .16);
+    }
+
+    .plano__itens li {
+      display: flex;
+      gap: .5rem;
+      font-size: .8125rem;
+      line-height: 1.4;
+    }
+
+    .plano__itens svg {
+      flex-shrink: 0;
+      width: 15px;
+      height: 15px;
+      margin-top: 1px;
+      color: var(--vermelho);
+    }
+
+    .plano--destaque .plano__itens svg {
+      color: var(--ambar);
+    }
+
+    .plano__marca {
+      margin-top: 1rem;
+      padding-top: .85rem;
+      border-top: 1px solid var(--borda);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--cinza-claro);
+    }
+
+    .plano--destaque .plano__marca {
+      border-top-color: rgba(255, 255, 255, .16);
+      color: rgba(255, 255, 255, .55);
+    }
+
+    .plano__bolinha {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 2px solid rgba(23, 23, 25, .22);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .plano--destaque .plano__bolinha {
+      border-color: rgba(255, 255, 255, .35);
+    }
+
+    .plano.is-on .plano__bolinha {
+      border-color: var(--vermelho);
+      background: var(--vermelho);
+    }
+
+    .plano--destaque.is-on .plano__bolinha {
+      border-color: var(--ambar);
+      background: var(--ambar);
+    }
+
+    .plano__bolinha::after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0;
+    }
+
+    .plano.is-on .plano__bolinha::after {
+      opacity: 1;
+    }
+
+    .plano.is-on .plano__marca {
+      color: var(--vermelho);
+    }
+
+    .plano--destaque.is-on .plano__marca {
+      color: var(--ambar);
+    }
+
+    .incluso {
+      margin: 1.25rem 0 0;
+      font-size: .8125rem;
+      line-height: 1.55;
+      color: var(--cinza-texto);
+    }
+
+    /* ---------- formulário ---------- */
+    .form {
+      margin-top: 1.75rem;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 1.75rem 1.5rem;
+    }
+
+    .form h2 {
+      margin: 0 0 .3rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .form__sub {
+      margin: 0 0 1.35rem;
+      font-size: .875rem;
+      color: var(--cinza-texto);
+    }
+
+    .grade {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .campo label {
+      display: block;
+      margin-bottom: .45rem;
+      font-size: .6875rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--cinza-texto);
+    }
+
+    .campo input {
+      width: 100%;
+      height: 52px;
+      padding: 0 1rem;
+      font-family: var(--font);
+      font-size: 1rem;
+      color: var(--carvao);
+      background: #FCFCFB;
+      border: 1px solid var(--borda);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .campo input:focus {
+      border-color: var(--vermelho);
+      background: #fff;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      width: 100%;
+      height: 54px;
+      margin-top: 1.35rem;
+      font-family: var(--font);
+      font-size: .875rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--vermelho);
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: filter .2s ease, opacity .2s ease;
+    }
+
+    .btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .erro {
+      margin: .85rem 0 0;
+      font-size: .8125rem;
+      font-weight: 600;
+      color: var(--vermelho);
+    }
+
+    .nota {
+      margin: .9rem 0 0;
+      font-size: .75rem;
+      line-height: 1.5;
+      color: var(--cinza-claro);
+    }
+
+    /* ---------- sucesso ---------- */
+    .sucesso {
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 3rem 1.5rem;
+      margin-top: 1.75rem;
+    }
+
+    .sucesso svg {
+      width: 54px;
+      height: 54px;
+      color: var(--vermelho);
+    }
+
+    .sucesso h2 {
+      margin: 1rem 0 .4rem;
+      font-size: 1.625rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .sucesso p {
+      margin: 0;
+      font-size: .9375rem;
+      line-height: 1.55;
+      color: var(--cinza-texto);
+    }
+
+    @media (max-width: 900px) {
+      .planos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+
+      .planos,
+      .grade {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <span class="lockup">
+      <img class="lockup__cc" src="/static/img/logos/cozinha-campea.png" alt="Cozinha Campeã" />
+      <i aria-hidden="true">×</i>
+      <img class="lockup__v4" src="/static/img/logos/v4-vermelho.png" alt="V4 Company" />
+    </span>
+
+    <div id="conteudo">
+      <p class="eyebrow">O investimento</p>
+      <h1>Escolha o plano do seu restaurante.</h1>
+      <p class="vagas" id="vagas">
+        <span class="vagas__ponto" aria-hidden="true"></span>
+        <span id="vagasTexto">
+          {%- if vagas_restantes > 0 -%}
+          Somente {{ vagas_total }} vagas · restam {{ vagas_restantes }}
+          {%- else -%}
+          As {{ vagas_total }} vagas foram preenchidas · entre na lista de espera
+          {%- endif -%}
+        </span>
+      </p>
+
+      <div class="planos">
+        {% for p in oferta %}
+        <button type="button" class="plano{% if p.destaque %} plano--destaque{% endif %}" data-plano="{{ p.id }}">
+          <p class="plano__etiqueta">{{ p.etiqueta }}</p>
+          <p class="plano__nome">{{ p.nome }}</p>
+          <p class="plano__preco">{{ p.preco }}</p>
+          <p class="plano__periodo">{{ p.periodo }}</p>
+          <ul class="plano__itens">
+            {% for item in p.itens %}
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="m4 12 5 5L20 6" />
+              </svg><span>{{ item }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+          <span class="plano__marca">
+            <span class="plano__bolinha"></span>
+            <span class="plano__marca-texto">Quero este</span>
+          </span>
+        </button>
+        {% endfor %}
+      </div>
+
+      <p class="incluso">{{ incluso }}</p>
+
+      <section class="form">
+        <h2>Quero garantir minha vaga</h2>
+        <p class="form__sub">Escolha um plano acima e deixe seus dados. Nosso time entra em contato.</p>
+
+        <div class="grade">
+          <div class="campo">
+            <label for="nome">Nome completo</label>
+            <input id="nome" type="text" autocomplete="name" placeholder="Nome e sobrenome" />
+          </div>
+          <div class="campo">
+            <label for="restaurante">Restaurante</label>
+            <input id="restaurante" type="text" autocomplete="organization" placeholder="Nome do seu negócio" />
+          </div>
+          <div class="campo">
+            <label for="email">E-mail</label>
+            <input id="email" type="email" autocomplete="email" placeholder="voce@email.com" />
+          </div>
+          <div class="campo">
+            <label for="telefone">Telefone</label>
+            <input id="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" />
+          </div>
+        </div>
+
+        <button class="btn" id="btnEnviar">Quero falar com o time</button>
+        <p class="erro" id="erro" hidden></p>
+        <p class="nota">Ao enviar, você autoriza o contato da Cozinha Campeã e da V4 Company sobre os planos.</p>
+      </section>
+    </div>
+
+    <div class="sucesso" id="sucesso" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" />
+        <path d="m8 12 3 3 5-6" />
+      </svg>
+      <h2>Vaga reservada!</h2>
+      <p id="sucessoTexto">Recebemos seus dados. Nosso time entra em contato em breve.</p>
+    </div>
+  </main>
+
+  <script>
+    var JA_ENVIOU = {{ 'true' if ja_enviou else 'false' }};
+    var planoEscolhido = null;
+
+    var conteudo = document.getElementById('conteudo');
+    var sucesso = document.getElementById('sucesso');
+    var erro = document.getElementById('erro');
+
+    /* seleção de plano */
+    var cartoes = document.querySelectorAll('.plano');
+    cartoes.forEach(function (c) {
+      c.onclick = function () {
+        cartoes.forEach(function (o) {
+          o.classList.remove('is-on');
+          o.querySelector('.plano__marca-texto').textContent = 'Quero este';
+        });
+        c.classList.add('is-on');
+        c.querySelector('.plano__marca-texto').textContent = 'Plano escolhido';
+        planoEscolhido = c.getAttribute('data-plano');
+        erro.hidden = true;
+      };
+    });
+
+    /* máscara simples de telefone */
+    var tel = document.getElementById('telefone');
+    tel.addEventListener('input', function () {
+      var d = tel.value.replace(/\D/g, '').slice(0, 11);
+      if (d.length <= 10) {
+        tel.value = d.replace(/^(\d{0,2})(\d{0,4})(\d{0,4}).*/, function (_, a, b, c) {
+          return (a ? '(' + a : '') + (a.length === 2 ? ') ' : '') + b + (c ? '-' + c : '');
+        });
+      } else {
+        tel.value = d.replace(/^(\d{2})(\d{5})(\d{0,4}).*/, '($1) $2-$3');
+      }
+    });
+
+    function mostrarErro(msg) {
+      erro.textContent = msg;
+      erro.hidden = false;
+      erro.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+
+    document.getElementById('btnEnviar').onclick = function () {
+      var botao = this;
+      var dados = {
+        nome: document.getElementById('nome').value.trim(),
+        restaurante: document.getElementById('restaurante').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        telefone: document.getElementById('telefone').value.trim(),
+        plano: planoEscolhido
+      };
+
+      if (!dados.plano) { return mostrarErro('Escolha um dos planos acima.'); }
+      if (dados.nome.length < 2) { return mostrarErro('Informe seu nome.'); }
+      if (dados.email.indexOf('@') < 1) { return mostrarErro('Informe um e-mail válido.'); }
+      if (dados.telefone.replace(/\D/g, '').length < 10) {
+        return mostrarErro('Informe um telefone com DDD.');
+      }
+
+      botao.disabled = true;
+      botao.textContent = 'Enviando…';
+      erro.hidden = true;
+
+      fetch('/planos/api/interesse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      })
+        .then(function (res) { return res.json().then(function (j) { return { ok: res.ok, j: j }; }); })
+        .then(function (r) {
+          if (!r.ok) { throw new Error(r.j.erro || 'Não foi possível enviar.'); }
+          document.getElementById('sucessoTexto').textContent =
+            'Recebemos seus dados e o interesse no plano ' + r.j.plano +
+            '. Nosso time entra em contato em breve.';
+          conteudo.hidden = true;
+          sucesso.hidden = false;
+          window.scrollTo(0, 0);
+        })
+        .catch(function (e) {
+          botao.disabled = false;
+          botao.textContent = 'Quero falar com o time';
+          mostrarErro(e.message);
+        });
+    };
+
+    if (JA_ENVIOU) { conteudo.hidden = true; sucesso.hidden = false; }
+  </script>
+</body>
+
+</html>
