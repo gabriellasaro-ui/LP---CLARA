@@ -55,12 +55,14 @@
        divs simples e por isso não herdavam o gap do .grade */
     .grade > *,
     #painelDiagnostico > *,
-    #painelInteresse > * {
+    #painelInteresse > *,
+    #painelNps > * {
       margin-bottom: 20px;
     }
 
     #painelDiagnostico > *:last-child,
-    #painelInteresse > *:last-child {
+    #painelInteresse > *:last-child,
+    #painelNps > *:last-child {
       margin-bottom: 0;
     }
 
@@ -359,6 +361,108 @@
     .zap svg {
       width: 14px;
       height: 14px;
+    }
+
+    /* ---------- NPS ---------- */
+    .medias {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .media {
+      background: #FAFAFB;
+      border: 1px solid var(--borda);
+      border-radius: 10px;
+      padding: .85rem 1rem;
+    }
+
+    .media span {
+      display: block;
+      font-size: .625rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--cinza-claro);
+      margin-bottom: .25rem;
+    }
+
+    .media b {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -.03em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .media small {
+      font-size: .625em;
+      color: var(--cinza-claro);
+      font-weight: 600;
+    }
+
+    .notas-linha {
+      display: flex;
+      gap: .3rem;
+      flex-wrap: wrap;
+    }
+
+    .nota-chip {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 40px;
+      padding: .2rem .3rem;
+      border-radius: 6px;
+      background: #F1F1F4;
+      font-size: .8125rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .nota-chip i {
+      font-style: normal;
+      font-size: .5625rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--cinza-claro);
+    }
+
+    .nota-chip--promotor {
+      background: rgba(27, 162, 85, .12);
+      color: var(--verde);
+    }
+
+    .nota-chip--detrator {
+      background: rgba(227, 6, 19, .1);
+      color: var(--vermelho);
+    }
+
+    .obs {
+      max-width: 340px;
+      font-size: .8125rem;
+      line-height: 1.45;
+      color: var(--cinza-texto);
+    }
+
+    .selo-evento {
+      display: inline-block;
+      padding: .15rem .45rem;
+      border-radius: 99px;
+      background: rgba(27, 162, 85, .12);
+      color: var(--verde);
+      font-size: .5625rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1080px) {
+      .medias {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     /* filtros por plano */
@@ -774,6 +878,9 @@
       <button class="aba" id="abaInteresse" role="tab" aria-selected="false">
         Interessados <span class="aba__contador" id="abaContador">0</span>
       </button>
+      <button class="aba" id="abaNps" role="tab" aria-selected="false">
+        NPS <span class="aba__contador" id="abaContadorNps">0</span>
+      </button>
     </nav>
 
     <div id="painelDiagnostico">
@@ -895,6 +1002,39 @@
               </tr>
             </thead>
             <tbody id="listaInteresse"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div id="painelNps" hidden>
+      <section class="kpis kpis--interesse" id="kpisNps"></section>
+
+      <section class="card">
+        <div class="interesse__topo">
+          <div>
+            <p class="eyebrow">Pesquisa de experiência</p>
+            <h2>O que a sala achou</h2>
+            <p class="sub" id="npsResumo"></p>
+          </div>
+          <div class="acoes">
+            <a href="/nps" target="_blank" rel="noopener">Abrir pesquisa</a>
+            <a href="/nps/admin/export.csv">Baixar CSV</a>
+          </div>
+        </div>
+        <div class="medias" id="npsMedias"></div>
+        <div class="tabela-rolagem">
+          <table class="lista">
+            <thead>
+              <tr>
+                <th>Quando</th>
+                <th>Quem</th>
+                <th>Notas</th>
+                <th>Observações</th>
+                <th class="col-acao"></th>
+              </tr>
+            </thead>
+            <tbody id="listaNps"></tbody>
           </table>
         </div>
       </section>
@@ -1202,10 +1342,77 @@
         .catch(function () { /* mantem a ultima leitura na tela */ });
     }
 
+    /* ---------------------------- aba NPS ---------------------------- */
+    function pintarNps(d) {
+      document.getElementById('abaContadorNps').textContent = d.total;
+
+      var corNps = d.nps >= 50 ? 'var(--verde)' : (d.nps < 0 ? 'var(--vermelho)' : 'var(--carvao)');
+      document.getElementById('kpisNps').innerHTML =
+        '<div class="card kpi"><span>NPS</span><b style="color:' + corNps + '">' +
+        (d.total ? (d.nps > 0 ? '+' : '') + d.nps : '—') + '</b></div>' +
+        '<div class="card kpi"><span>Respostas</span><b>' + d.total + '</b></div>' +
+        '<div class="card kpi"><span>Promotores</span><b style="color:var(--verde)">' +
+        d.promotores + '</b></div>' +
+        '<div class="card kpi"><span>Neutros</span><b>' + d.neutros + '</b></div>' +
+        '<div class="card kpi"><span>Detratores</span><b style="color:var(--vermelho)">' +
+        d.detratores + '</b></div>' +
+        '<div class="card kpi"><span>Querem os próximos</span><b>' + d.querem_proximos +
+        '<small> de ' + d.total + '</small></b></div>';
+
+      document.getElementById('npsMedias').innerHTML = d.medias.map(function (m) {
+        return '<div class="media"><span>' + esc(m.nome) + '</span><b>' +
+          num(m.media.toFixed(1)) + '<small> / 10</small></b></div>';
+      }).join('');
+
+      document.getElementById('npsResumo').textContent = d.total
+        ? 'NPS calculado sobre a pergunta de recomendação: promotores (9–10) menos ' +
+          'detratores (0–6).'
+        : 'Ninguém respondeu a pesquisa ainda.';
+
+      document.getElementById('listaNps').innerHTML = d.total
+        ? d.pessoas.map(function (p) {
+          var chips = d.medias.map(function (m) {
+            var n = p.notas[m.id];
+            var extra = '';
+            if (m.id === 'recomendacao') {
+              extra = p.classificacao === 'promotor' ? ' nota-chip--promotor'
+                    : (p.classificacao === 'detrator' ? ' nota-chip--detrator' : '');
+            }
+            return '<span class="nota-chip' + extra + '">' + n +
+              '<i>' + esc(m.nome.slice(0, 5)) + '</i></span>';
+          }).join('');
+          var zap = p.whatsapp
+            ? '<a class="zap" href="https://wa.me/55' + esc(p.whatsapp) +
+              '" target="_blank" rel="noopener">WhatsApp</a>'
+            : '';
+          return '<tr>' +
+            '<td>' + esc(p.quando) + '</td>' +
+            '<td class="quem"><b>' + esc(p.nome) + '</b><span>' + esc(p.restaurante) + '</span>' +
+            (p.proximos_eventos ? '<br><span class="selo-evento">quer os próximos</span>' : '') +
+            '</td>' +
+            '<td><span class="notas-linha">' + chips + '</span></td>' +
+            '<td><span class="obs">' + (esc(p.observacoes) || '—') + '</span></td>' +
+            '<td class="col-acao">' + zap + '</td>' +
+            '</tr>';
+        }).join('')
+        : '<tr><td colspan="5" class="vazio">Ninguém respondeu a pesquisa ainda.</td></tr>';
+    }
+
+    function carregarNps() {
+      fetch('/nps/api/lista', { cache: 'no-store' })
+        .then(function (r) {
+          if (r.status === 403) { location.reload(); return null; }
+          return r.json();
+        })
+        .then(function (d) { if (d) { pintarNps(d); } })
+        .catch(function () { /* mantem a ultima leitura na tela */ });
+    }
+
     /* troca de aba */
     var abas = [
       { botao: document.getElementById('abaDiagnostico'), painel: document.getElementById('painelDiagnostico') },
-      { botao: document.getElementById('abaInteresse'), painel: document.getElementById('painelInteresse') }
+      { botao: document.getElementById('abaInteresse'), painel: document.getElementById('painelInteresse') },
+      { botao: document.getElementById('abaNps'), painel: document.getElementById('painelNps') }
     ];
     abas.forEach(function (alvo, indice) {
       alvo.botao.onclick = function () {
@@ -1223,6 +1430,7 @@
     function atualizarTudo() {
       carregar();
       carregarInteresse();
+      carregarNps();
     }
 
     atualizarTudo();

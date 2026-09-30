@@ -9,6 +9,7 @@ Formulário do evento + painel ao vivo. Roda dentro da mesma app Flask da LP.
 | Formulário (participantes) | `/diagnostico` | **aberto**, sem senha |
 | Painel de resultados | `/diagnostico/admin` | definida em `SENHA_ADMIN` |
 | Captura de planos | `/planos` | **aberta**, sem senha |
+| Pesquisa de experiência (NPS) | `/nps` | **aberta**, sem senha |
 
 O formulário é aberto: quem tem o link responde. A senha do painel vem só da variável
 de ambiente `SENHA_ADMIN` — **este repositório é público, então nenhuma senha real
@@ -92,6 +93,25 @@ No painel de admin há uma aba **Interessados** com:
 - export CSV.
 
 Ela usa a mesma sessão de admin do diagnóstico.
+
+## Pesquisa de experiência (`/nps`)
+
+Quatro notas de 0 a 10 — Recomendação, Conteúdo, Networking e Organização —, campo
+livre de observações, a pergunta "Quero participar dos próximos eventos" e a
+identificação (nome, negócio, e-mail e telefone).
+
+A copy das perguntas veio da pesquisa da LP V4 Minas (`pesquisa.html`), adaptada só
+onde o público muda: lá era "outro empresário", aqui "outro dono de restaurante".
+Está em `PERGUNTAS`, no `nps.py`.
+
+**NPS** é calculado só sobre a pergunta de recomendação, pelas faixas clássicas:
+promotores 9–10, neutros 7–8, detratores 0–6. O índice é `% promotores − % detratores`.
+
+Tabela própria: `dashboard_tvsim.nps_respostas`.
+
+No painel, a aba **NPS** traz o índice, a divisão promotores/neutros/detratores, quantos
+querem os próximos eventos, a média de cada uma das quatro notas e a lista completa com
+as notas individuais, as observações e botão de WhatsApp. Com export CSV.
 
 ## Onde os dados ficam
 

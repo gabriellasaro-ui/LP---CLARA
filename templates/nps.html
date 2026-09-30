@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Pesquisa de Experiência · Cozinha Campeã × V4</title>
+  <link rel="icon" href="/static/img/favicon.ico" sizes="any" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --vermelho: #E30613;
+      --verde: #1BA255;
+      --carvao: #171719;
+      --cinza-texto: #625E58;
+      --cinza-claro: #9A968F;
+      --borda: rgba(23, 23, 25, .12);
+      --creme: #F7F4EE;
+      --font: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100svh;
+      font-family: var(--font);
+      color: var(--carvao);
+      background: var(--creme);
+    }
+
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 3rem;
+    }
+
+    .lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      white-space: nowrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .lockup__cc {
+      height: 38px;
+      width: auto;
+    }
+
+    .lockup__v4 {
+      height: 23px;
+      width: auto;
+    }
+
+    .lockup i {
+      font-style: normal;
+      font-size: .875rem;
+      line-height: 1;
+      color: var(--cinza-texto);
+      opacity: .55;
+    }
+
+    .eyebrow {
+      margin: 0 0 .4rem;
+      font-size: .6875rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--vermelho);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 1.2rem + 1.6vw, 2.125rem);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -.03em;
+    }
+
+    .subtitulo {
+      margin: .6rem 0 0;
+      font-size: .9375rem;
+      color: var(--cinza-texto);
+    }
+
+    .micro {
+      margin: .35rem 0 0;
+      font-size: .8125rem;
+      color: var(--cinza-claro);
+    }
+
+    .card {
+      margin-top: 1.5rem;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 1.6rem 1.5rem;
+    }
+
+    .bloco {
+      padding-bottom: 1.6rem;
+      margin-bottom: 1.6rem;
+      border-bottom: 1px solid var(--borda);
+    }
+
+    .bloco:last-child {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .bloco__label {
+      display: block;
+      margin-bottom: .45rem;
+      font-size: .6875rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--cinza-claro);
+    }
+
+    .bloco__texto {
+      margin: 0 0 1.1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    /* ---------- escala 0 a 10 ---------- */
+    .escala {
+      display: grid;
+      grid-template-columns: repeat(11, minmax(0, 1fr));
+      gap: .35rem;
+    }
+
+    .nota {
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      font-family: var(--font);
+      font-size: .9375rem;
+      font-weight: 600;
+      color: var(--cinza-texto);
+      background: #FAFAF9;
+      border: 1.5px solid var(--borda);
+      border-radius: 9px;
+      cursor: pointer;
+      transition: border-color .15s ease, background .15s ease, color .15s ease,
+        transform .1s ease;
+    }
+
+    .nota:hover {
+      border-color: rgba(227, 6, 19, .5);
+    }
+
+    .nota:active {
+      transform: scale(.94);
+    }
+
+    .nota.is-on {
+      background: var(--vermelho);
+      border-color: var(--vermelho);
+      color: #fff;
+    }
+
+    .legenda {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: .55rem;
+      font-size: .6875rem;
+      color: var(--cinza-claro);
+    }
+
+    /* ---------- campos ---------- */
+    .grade {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .campo label {
+      display: block;
+      margin-bottom: .45rem;
+      font-size: .6875rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--cinza-texto);
+    }
+
+    .campo input,
+    .campo textarea {
+      width: 100%;
+      padding: 0 1rem;
+      font-family: var(--font);
+      font-size: 1rem;
+      color: var(--carvao);
+      background: #FCFCFB;
+      border: 1px solid var(--borda);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .campo input {
+      height: 52px;
+    }
+
+    .campo textarea {
+      padding: .85rem 1rem;
+      line-height: 1.5;
+      resize: vertical;
+      min-height: 92px;
+    }
+
+    .campo input:focus,
+    .campo textarea:focus {
+      border-color: var(--vermelho);
+      background: #fff;
+    }
+
+    /* ---------- próximos eventos ---------- */
+    .escolha {
+      display: flex;
+      gap: .6rem;
+    }
+
+    .escolha button {
+      flex: 1;
+      padding: .95rem 1rem;
+      font-family: var(--font);
+      font-size: .9375rem;
+      font-weight: 600;
+      color: var(--carvao);
+      background: #fff;
+      border: 1.5px solid var(--borda);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: border-color .18s ease, background .18s ease;
+    }
+
+    .escolha button:hover {
+      border-color: rgba(227, 6, 19, .45);
+    }
+
+    .escolha button.is-on {
+      border-color: var(--vermelho);
+      background: rgba(227, 6, 19, .05);
+    }
+
+    /* ---------- botão ---------- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 54px;
+      margin-top: 1.5rem;
+      font-family: var(--font);
+      font-size: .875rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--vermelho);
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: filter .2s ease, opacity .2s ease;
+    }
+
+    .btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .erro {
+      margin: .85rem 0 0;
+      font-size: .8125rem;
+      font-weight: 600;
+      color: var(--vermelho);
+    }
+
+    .nota-rodape {
+      margin: .9rem 0 0;
+      font-size: .75rem;
+      line-height: 1.5;
+      color: var(--cinza-claro);
+      text-align: center;
+    }
+
+    /* ---------- sucesso ---------- */
+    .sucesso {
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 3rem 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .sucesso svg {
+      width: 54px;
+      height: 54px;
+      color: var(--vermelho);
+    }
+
+    .sucesso h2 {
+      margin: 1rem 0 .4rem;
+      font-size: 1.625rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .sucesso p {
+      margin: 0 auto;
+      max-width: 42ch;
+      font-size: .9375rem;
+      line-height: 1.55;
+      color: var(--cinza-texto);
+    }
+
+    @media (max-width: 560px) {
+      .grade {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .escala {
+        gap: .25rem;
+      }
+
+      .nota {
+        font-size: .8125rem;
+        border-radius: 7px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <span class="lockup">
+      <img class="lockup__cc" src="/static/img/logos/cozinha-campea.png" alt="Cozinha Campeã" />
+      <i aria-hidden="true">×</i>
+      <img class="lockup__v4" src="/static/img/logos/v4-vermelho.png" alt="V4 Company" />
+    </span>
+
+    <div id="conteudo">
+      <p class="eyebrow">{{ cabecalho.eyebrow }}</p>
+      <h1>{{ cabecalho.titulo }}</h1>
+      <p class="subtitulo">{{ cabecalho.subtitulo }}</p>
+      <p class="micro">{{ cabecalho.micro }}</p>
+
+      <section class="card">
+        {% for p in perguntas %}
+        <div class="bloco">
+          <span class="bloco__label">{{ p.bloco }}</span>
+          <p class="bloco__texto">{{ p.texto }}</p>
+          <div class="escala" data-escala="{{ p.id }}"></div>
+          <div class="legenda"><span>{{ p.min }}</span><span>{{ p.max }}</span></div>
+        </div>
+        {% endfor %}
+
+        <div class="bloco">
+          <span class="bloco__label">Observações</span>
+          <div class="campo">
+            <textarea id="observacoes" rows="3"
+              placeholder="O que mais te marcou, o que faltou, o que podemos melhorar…"></textarea>
+          </div>
+        </div>
+
+        <div class="bloco">
+          <span class="bloco__label">Próximos encontros</span>
+          <p class="bloco__texto">Quero participar dos próximos eventos</p>
+          <div class="escolha" id="proximos">
+            <button type="button" data-valor="sim">Sim, quero ser avisado</button>
+            <button type="button" data-valor="nao">Agora não</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <span class="bloco__label">Identificação</span>
+        <div class="grade">
+          <div class="campo">
+            <label for="nome">Nome completo</label>
+            <input id="nome" type="text" autocomplete="name" placeholder="Nome e sobrenome" />
+          </div>
+          <div class="campo">
+            <label for="restaurante">Restaurante, bar, etc.</label>
+            <input id="restaurante" type="text" autocomplete="organization" placeholder="Nome do seu negócio" />
+          </div>
+          <div class="campo">
+            <label for="email">E-mail</label>
+            <input id="email" type="email" autocomplete="email" placeholder="voce@email.com" />
+          </div>
+          <div class="campo">
+            <label for="telefone">Telefone</label>
+            <input id="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" />
+          </div>
+        </div>
+
+        <button class="btn" id="btnEnviar">Enviar minha resposta</button>
+        <p class="erro" id="erro" hidden></p>
+        <p class="nota-rodape">Suas respostas são usadas para melhorar os próximos encontros.</p>
+      </section>
+    </div>
+
+    <div class="sucesso" id="sucesso" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" />
+        <path d="m8 12 3 3 5-6" />
+      </svg>
+      <h2>Obrigado!</h2>
+      <p id="sucessoTexto">Sua resposta foi registrada. É com ela que a gente monta o próximo encontro.</p>
+    </div>
+  </main>
+
+  <script>
+    var PERGUNTAS = {{ perguntas | tojson }};
+    var JA_ENVIOU = {{ 'true' if ja_enviou else 'false' }};
+
+    var notas = {};
+    var querProximos = null;
+
+    var conteudo = document.getElementById('conteudo');
+    var sucesso = document.getElementById('sucesso');
+    var erro = document.getElementById('erro');
+
+    /* monta as escalas de 0 a 10 */
+    PERGUNTAS.forEach(function (p) {
+      var caixa = document.querySelector('[data-escala="' + p.id + '"]');
+      var html = '';
+      for (var n = 0; n <= 10; n++) {
+        html += '<button type="button" class="nota" data-n="' + n + '">' + n + '</button>';
+      }
+      caixa.innerHTML = html;
+      caixa.querySelectorAll('.nota').forEach(function (b) {
+        b.onclick = function () {
+          caixa.querySelectorAll('.nota').forEach(function (o) { o.classList.remove('is-on'); });
+          b.classList.add('is-on');
+          notas[p.id] = Number(b.getAttribute('data-n'));
+          erro.hidden = true;
+        };
+      });
+    });
+
+    /* próximos eventos */
+    var botoesProximos = document.querySelectorAll('#proximos button');
+    botoesProximos.forEach(function (b) {
+      b.onclick = function () {
+        botoesProximos.forEach(function (o) { o.classList.remove('is-on'); });
+        b.classList.add('is-on');
+        querProximos = b.getAttribute('data-valor') === 'sim';
+        erro.hidden = true;
+      };
+    });
+
+    /* máscara de telefone */
+    var tel = document.getElementById('telefone');
+    tel.addEventListener('input', function () {
+      var d = tel.value.replace(/\D/g, '').slice(0, 11);
+      if (d.length <= 10) {
+        tel.value = d.replace(/^(\d{0,2})(\d{0,4})(\d{0,4}).*/, function (_, a, b, c) {
+          return (a ? '(' + a : '') + (a.length === 2 ? ') ' : '') + b + (c ? '-' + c : '');
+        });
+      } else {
+        tel.value = d.replace(/^(\d{2})(\d{5})(\d{0,4}).*/, '($1) $2-$3');
+      }
+    });
+
+    function mostrarErro(msg, alvo) {
+      erro.textContent = msg;
+      erro.hidden = false;
+      (alvo || erro).scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+
+    document.getElementById('btnEnviar').onclick = function () {
+      var botao = this;
+
+      /* na ordem da tela: primeiro as notas, depois os dados */
+      for (var i = 0; i < PERGUNTAS.length; i++) {
+        var p = PERGUNTAS[i];
+        if (typeof notas[p.id] !== 'number') {
+          return mostrarErro('Falta dar a nota de “' + p.bloco + '”.',
+            document.querySelector('[data-escala="' + p.id + '"]'));
+        }
+      }
+      if (querProximos === null) {
+        return mostrarErro('Diga se quer participar dos próximos eventos.',
+          document.getElementById('proximos'));
+      }
+
+      var dados = {
+        nome: document.getElementById('nome').value.trim(),
+        restaurante: document.getElementById('restaurante').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        telefone: document.getElementById('telefone').value.trim(),
+        observacoes: document.getElementById('observacoes').value.trim(),
+        proximos_eventos: querProximos
+      };
+      PERGUNTAS.forEach(function (p) { dados[p.id] = notas[p.id]; });
+
+      if (dados.nome.length < 2) { return mostrarErro('Informe seu nome.'); }
+      if (dados.restaurante.length < 2) { return mostrarErro('Informe o nome do seu negócio.'); }
+      if (dados.email.indexOf('@') < 1) { return mostrarErro('Informe um e-mail válido.'); }
+      if (dados.telefone.replace(/\D/g, '').length < 10) {
+        return mostrarErro('Informe um telefone com DDD.');
+      }
+
+      botao.disabled = true;
+      botao.textContent = 'Enviando…';
+      erro.hidden = true;
+
+      fetch('/nps/api/responder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      })
+        .then(function (res) { return res.json().then(function (j) { return { ok: res.ok, j: j }; }); })
+        .then(function (r) {
+          if (!r.ok) { throw new Error(r.j.erro || 'Não foi possível enviar.'); }
+          if (r.j.proximos_eventos) {
+            document.getElementById('sucessoTexto').textContent =
+              'Sua resposta foi registrada e você entrou na lista dos próximos encontros. ' +
+              'A gente te avisa antes de todo mundo.';
+          }
+          conteudo.hidden = true;
+          sucesso.hidden = false;
+          window.scrollTo(0, 0);
+        })
+        .catch(function (e) {
+          botao.disabled = false;
+          botao.textContent = 'Enviar minha resposta';
+          mostrarErro(e.message);
+        });
+    };
+
+    if (JA_ENVIOU) { conteudo.hidden = true; sucesso.hidden = false; }
+  </script>
+</body>
+
+</html>
